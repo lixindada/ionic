@@ -1,0 +1,30 @@
+<ion-header>
+  
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon name="arrow-back" (click)="closeModal()"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="secondary">
+      <ion-button color="success" size="small" (click)="complete()">完成</ion-button>
+    </ion-buttons>
+    <ion-title>修改密码</ion-title>
+  </ion-toolbar>
+      
+</ion-header>
+
+<ion-content>
+  <div class="modal">
+    <ion-item>
+        <ion-label position="stacked">原密码</ion-label>
+        <ion-input [(ngModel)]="oldPwd"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">新密码</ion-label>
+        <ion-input [(ngModel)]="newPwd"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">确认密码</ion-label>
+        <ion-input [(ngModel)]="dbPwd"></ion-input>
+      </ion-item>
+  </div>
+</ion-content>

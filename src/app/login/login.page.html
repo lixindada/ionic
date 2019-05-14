@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>登陆</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <!-- 登陆 -->
+      <ion-item>
+        <ion-label position="floating">账号</ion-label>
+        <ion-input [(ngModel)]="userName"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">密码</ion-label>
+        <ion-input [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">验证码</ion-label>
+        <ion-input [(ngModel)]="smsCode"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="login()">login</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

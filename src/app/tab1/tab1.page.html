@@ -1,0 +1,78 @@
+<ion-header>
+    <!-- bar -->
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="clickedSearch()">
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="openScreenModal()">
+          筛选
+        </ion-button>
+      </ion-buttons>
+      <ion-searchbar placeholder="请输入关键字" [(ngModel)]="searchVal" (ionChange) = "searchFun()"></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-menu side="start" swipeGesture="true" menuId="dealtMenu">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>筛选项</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>消息状态</ion-label>
+            <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "readTypeChange($event)">
+              <ion-select-option value="1" [selected] = "todoStatus === 1 ? true : false">未完成</ion-select-option>
+              <ion-select-option value="2" [selected] = "todoStatus === 2 ? true : false">已完成</ion-select-option>
+              <ion-select-option value="0" [selected] = "todoStatus === 0 ? true : false">全部</ion-select-option>
+            </ion-select>
+          </ion-item>      
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet main></ion-router-outlet>
+    
+    <!-- 消息列表 -->
+    <ion-list>
+      <ng-container *ngIf="messageList">
+        
+        <ion-item *ngFor="let item of messageList" (click)="msgDetailsClick(item)">
+          <ion-label>
+            <h3>{{item.subject}}</h3>
+            <p>{{item.created_time}}</p>
+          </ion-label>
+          <ion-button [color]="item.todo_status === 1 ? 'secondary' : ''" slot="end">
+            {{item.todo_status === 2 ? "已完成" : "未完成"}}
+          </ion-button>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  
+    <!-- 分页 -->
+    <div class="page">
+      <ion-item>
+        <span>共{{msgTotal}}条</span>
+        <span>{{page}}/{{pageNum}}</span>
+        <ion-item slot="end" lines="none">
+          <span>跳到</span>
+          <ion-input type="number" [(ngModel)]="pageKey" (keyup) = "pageKeyUp($event)"></ion-input>
+          <span>页</span>
+        </ion-item>
+      </ion-item>
+      <ion-item>
+        <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "selectSizeChange($event)">
+          <ion-select-option value="10" [selected] = "msgZize === 10 ? true : false">每页10条</ion-select-option>
+          <ion-select-option value="20" [selected] = "msgZize === 20 ? true : false">每页20条</ion-select-option>
+          <ion-select-option value="30" [selected] = "msgZize === 30 ? true : false">每页30条</ion-select-option>
+          <ion-select-option value="50" [selected] = "msgZize === 50 ? true : false">每页50条</ion-select-option>
+        </ion-select>
+        <div class="next-page">
+          <ion-button [color]="page <= 1 ? 'light' : null" (click)="nextPage(0)">上一页</ion-button>
+          <ion-button [color]="page >= pageNum ? 'light' : null" (click)="nextPage(1)">下一页</ion-button>
+        </div>
+      </ion-item>
+    </div>
+  </ion-content>  

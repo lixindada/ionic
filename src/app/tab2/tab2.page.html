@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Tab Two
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="getData()"> (ionic)获取数据 </ion-button>
+  <ion-button (click)="getDatas()"> 获取数据 </ion-button>
+  <ion-button (click)="scan()"> 扫码 </ion-button>
+  <ion-button (click)="messagePush()"> 推送 </ion-button>
+  <ion-button (click)="showActionSheet()"> 底部弹出框 </ion-button>
+  <ion-button (click)="upload()">上传文件</ion-button>
+  <ion-button (click)="download()">下载文件</ion-button>
+  <ion-button (click)="setBar()">设置状态栏</ion-button>
+  
+  
+  <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>log</ion-card-subtitle>
+        <ion-card-title>console.log</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        {{log}}
+      </ion-card-content>
+  </ion-card>
+
+  <!-- 消息列表 -->
+  <ion-list>
+    <ng-container *ngIf="messageList">
+      <ion-item *ngFor="let item of messageList">
+        {{item.nickname}}
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

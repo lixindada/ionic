@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button (click)="clickedSearch()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" (click)="openScreenModal()">
+        筛选
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar placeholder="请输入关键字"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-menu side="start" swipeGesture="true" menuId="indexMenu">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>筛选项</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        
+        <ion-item>
+          <ion-label>厂商/品牌</ion-label>
+          <!-- <ion-multi-picker item-content [multiPickerColumns]="cityColumns" [cancelText]="'取消'" [doneText]="'完成'"></ion-multi-picker> -->
+        </ion-item>
+
+        <ion-item>
+          <ion-label>有效期(始)</ion-label>
+          <ion-datetime display-format="YYYY-MM-DD" cancelText="取消" doneText="确定" mode="ios" [(ngModel)]="timeStartValue" (ionChange)="timeChange()"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>有效期(末)</ion-label>
+          <ion-datetime display-format="YYYY-MM-DD" cancelText="取消" doneText="确定" mode="ios" [(ngModel)]="timeStartValue" (ionChange)="timeChange()"></ion-datetime>
+        </ion-item>
+                
+        <ion-item>
+          <ion-label>商品分类</ion-label>
+          <ion-select okText="确定" cancelText="取消">
+            <ion-select-option value="">请选择</ion-select-option>
+            <ion-select-option value="item.category_id" *ngFor="let item of classList">{{item.category_name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item>
+            <ion-label>商品状态</ion-label>
+            <ion-select okText="确定" cancelText="取消" multiple="true">
+              <ion-select-option value="item.inventory_status_name" *ngFor="let item of statusList">{{item.inventory_status_name}}</ion-select-option>
+            </ion-select>
+          </ion-item>      
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  
+  <ion-router-outlet main></ion-router-outlet>
+</ion-content>

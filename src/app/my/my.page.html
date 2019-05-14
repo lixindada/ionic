@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>我的信息</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="my">
+    <ul class="my-details" *ngIf="myInfo">
+      <li class="clearfix"><span>用户名</span><span>{{myInfo.user_name}}</span></li>
+      <li class="clearfix"><span>真实姓名</span><span>{{myInfo.real_name}}</span></li>
+      <li class="clearfix"><span>角色</span><span>{{myInfo.role_name}}</span></li>
+      <li class="clearfix"><span>手机号</span><span>{{myInfo.mobile}}</span></li>
+      <!-- <li class="clearfix"><span>密码</span><span>******</span></li> -->
+    </ul>
+    <ul>
+      <li (click)="editPwd()">修改密码</li>
+      <li (click)="logout()">登出</li>
+    </ul>
+  </div>
+</ion-content>

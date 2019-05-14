@@ -1,0 +1,11 @@
+{
+    "/apidata":{
+      "target":"http://172.168.30.230:7001",
+      "secure":false,
+      "logLevel":"debug",
+      "changeOrigin":true,
+      "pathRewrite":{
+        "^/apidata":""
+      }
+    }
+  }
