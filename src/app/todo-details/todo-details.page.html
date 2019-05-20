@@ -1,0 +1,503 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>详情</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h3>基本信息</h3>
+  <!-- 调拨单 -->
+  <ion-item *ngIf="formType == 'transfer'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>调拨单号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>调拨状态:</b>   {{todoDetails.form_status_name}}</p>
+      <p><b>发货时间:</b>  {{setTime(todoDetails.create_time)}}</p>
+      <p><b>收货时间:</b>  {{setTime(todoDetails.apply_time)}}</p>
+      <p><b>发货库房:</b>  {{todoDetails.out_company_name}}/{{todoDetails.out_department_name}}</p>
+      <p><b>收货库房:</b>  {{todoDetails.in_company_name}}/{{todoDetails.in_department_name}}</p>
+      <p><b>发货人:</b>  {{todoDetails.out_contact_name}}</p>
+      <p><b>收货人:</b>  {{todoDetails.in_contact_name}}</p>
+    </ion-label>
+  </ion-item>
+  
+  <!-- 采购申请单 -->
+  <ion-item *ngIf="formType == 'purchasing_requisition'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>申请单号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>申请时间:</b>  {{setTime(todoDetails.create_time)}}</p>
+      <p><b>申请人:</b>  {{todoDetails.create_user.real_name}}</p>
+      <p><b>到货库房:</b>  {{todoDetails.in_company_name}}/{{todoDetails.in_department_name}}/{{todoDetails.in_contact_name}}</p>
+      <p><b>状态:</b>  {{todoDetails.requisition_status_name}}</p>
+      <p><b>采购总价:</b>  {{todoDetails.sum_goods_money}}</p>
+      <p><b>申请总数:</b>  {{todoDetails.sum_goods_apply}}</p>
+    </ion-label>
+  </ion-item>
+
+  <!-- 计划采购 -->
+  <ion-item *ngIf="formType == 'purchasing_plan'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>采购单号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>创建时间:</b>  {{setTime(todoDetails.create_time)}}</p>
+      <p><b>创建人:</b>  {{todoDetails.create_user.real_name}}</p>
+      <p><b>采购公司:</b>  {{todoDetails.purchaser_company_name}}/{{todoDetails.purchaser_department_name}}/{{todoDetails.purchaser_contact_name}}</p>
+      <p><b>供货商:</b>  {{todoDetails.supplier_company_name}}/{{todoDetails.supplier_department_name}}/{{todoDetails.supplier_contact_name}}</p>
+      <p><b>付款方式:</b>  {{todoDetails.payment_mode_name}}</p>
+      <p><b>采购总金额:</b>  {{todoDetails.total_money}}</p>
+      <p><b>采购总数:</b>  {{todoDetails.total_quantity}}</p>
+      <p><b>状态:</b>  {{todoDetails.purchasing_status_name}}</p>
+      <p><b>关联发票号:</b>  {{todoDetails.sum_goods_apply}}</p>
+      <p><b>关联申请单:</b>  {{todoDetails.sum_goods_apply}}</p>
+      <p><b>更新时间:</b>  {{setTime(todoDetails.update_time)}}</p>
+      <p><b>更新人:</b>  {{todoDetails.update_user.real_name}}</p>
+    </ion-label>
+  </ion-item>
+
+  <!-- 盘盈入库 -->
+  <ion-item *ngIf="formType == 'in'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>盘盈入库单号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>状态:</b>  {{todoDetails.form_status_name}}</p>
+      <p><b>入库时间:</b>  {{setTime(todoDetails.apply_time)}}</p>
+      <p><b>入库库房:</b>  {{todoDetails.location_company_name}}/{{todoDetails.location_department_name}}/{{todoDetails.location_contact_name}}</p>
+      <p><b>操作人:</b>  {{todoDetails.apply_user.real_name}}</p>
+      <p><b>备注:</b>  {{todoDetails.in_remark}}</p>
+    </ion-label>
+  </ion-item>
+
+  <!-- 盘亏出库 -->
+  <ion-item *ngIf="formType == 'out'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>盘亏出库单号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>状态:</b>  {{todoDetails.form_status_name}}</p>
+      <p><b>出库时间:</b>  {{setTime(todoDetails.out_time)}}</p>
+      <p><b>出库库房:</b>  {{todoDetails.out_company_name}}/{{todoDetails.out_department_name}}/{{todoDetails.out_contact_name}}</p>
+      <p><b>申请人:</b>  {{todoDetails.apply_user.real_name}}</p>
+      <p><b>备注:</b>  {{todoDetails.out_remark}}</p>
+    </ion-label>
+  </ion-item>
+
+  <!-- 易货单 -->
+  <ion-item *ngIf="formType == 'barter'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>易货单号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>状态:</b>  {{todoDetails.form_status_name}}</p>
+      <p><b>易货类型:</b>  {{todoDetails.barter_type_name}}</p>
+      <p><b>易货库房:</b>  {{todoDetails.location_company_name}}/{{todoDetails.location_department_name}}/{{todoDetails.location_contact_name}}</p>
+    </ion-label>
+  </ion-item>
+
+  <!-- 内部借货 -->
+  <ion-item *ngIf="formType == 'borrowing_inner'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>借货单号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>发货库房:</b>  {{todoDetails.location_company_name}}/{{todoDetails.location_department_name}}/{{todoDetails.location_contact_name}}</p>
+      <p><b>状态:</b>  {{todoDetails.form_status_name}}</p>
+    </ion-label>
+  </ion-item>
+
+  <!-- 销售订单 -->
+  <ion-item *ngIf="formType == 'order'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>订单编号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>创建时间:</b>  {{setTime(todoDetails.create_time)}}</p>
+      <p><b>创建人:</b>  {{todoDetails.create_user.real_name}}</p>
+      <p><b>库房:</b>  {{todoDetails.location_company_name}}/{{todoDetails.location_department_name}}/{{todoDetails.location_contact_name}}</p>
+      <p><b>客户:</b>  {{todoDetails.customer_company_name}}/{{todoDetails.customer_department_name}}/{{todoDetails.customer_contact_name}}</p>
+      <p><b>销售总额:</b>  {{todoDetails.total_price}}</p>
+      <p><b>状态:</b>  {{todoDetails.form_status_name}}</p>
+      <p><b>发票编号:</b>  </p>
+      <p><b>备注:</b>  {{todoDetails.order_remark}}</p>
+    </ion-label>
+  </ion-item>
+
+  <!-- 售货发票 -->
+  <ion-item *ngIf="formType == 'invoice'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>发票编号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>总金额:</b>  {{todoDetails.total_money}}</p>
+      <p><b>状态:</b>  {{todoDetails.form_status_name}}</p>
+    </ion-label>
+  </ion-item>
+  
+  <ng-container *ngIf="formType == 'invoice'">
+    <h3>申请信息</h3>
+    <ion-item>
+      <ion-label *ngIf="todoDetails">
+        <p><b>申请人:</b>  {{todoDetails.apply_user.real_name}}</p>
+        <p><b>申请时间:</b>  {{setTime(todoDetails.apply_time)}}</p>
+        <p><b>收票时间:</b>  {{setTime(todoDetails.receipt_time)}}</p>
+        <p><b>客户:</b>  {{todoDetails.customer_company_name}}</p>
+        <p><b>销售订单:</b>  <span *ngFor="let item of todoDetails.order_form_ids">{{item}},</span></p>
+        <p><b>开具类型:</b>  {{todoDetails.apply_type_name}}</p>
+        <p><b>发票抬头:</b>  {{todoDetails.apply_invoice_title}}</p>
+        <p><b>开票公司:</b>  {{todoDetails.invoice_company_name}}</p>
+        <p><b>发票邮寄地址:</b>  {{todoDetails.apply_address}}</p>
+        <p><b>开票备注:</b>  {{todoDetails.apply_remark}}</p>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+
+  <!-- 预防账款 -->
+  <ion-item *ngIf="formType == 'prepayment'">
+    <ion-label *ngIf="todoDetails">
+      <p><b>预付款编号:</b>  {{todoDetails.form_id}}</p>
+      <p><b>创建时间:</b>  {{setTime(todoDetails.create_time)}}</p>
+      <p><b>创建人:</b>  {{todoDetails.create_user.real_name}}</p>
+      <p><b>预付金额:</b>  {{todoDetails.total_money}}</p>
+      <p><b>付款单位:</b>  {{todoDetails.payer_company_name}}</p>
+      <p><b>收款单位:</b>  {{todoDetails.payee_company_name}}</p>
+      <p><b>抵扣或归还金额:</b>  {{todoDetails.deduct_money}}</p>
+      <p><b>剩余金额:</b>  {{todoDetails.total_money}}</p>
+      <p><b>状态:</b>  {{todoDetails.form_status_name}}</p>
+      <p><b>备注:</b>  {{todoDetails.remark}}</p>
+    </ion-label>
+  </ion-item>
+
+  
+  <!-- 抵扣或归还记录-->
+  <ng-container *ngIf="formType=='invoice' && todoDetails">
+    <h3>抵扣或归还记录</h3>
+    <ion-item *ngFor="let item of todoDetails.logs" [lines]="item.act ? 'none' : 'inset'">
+      <ion-label>
+        <p><b>操作时间:</b> {{setTime(item.log_time)}}</p>
+        <p><b>抵扣或归还金额:</b> {{item.deduct_money}}</p>
+        <p><b>扣除途径:</b> {{item.log_type_name}}</p>
+        <p><b>操作人:</b> {{item.log_user.real_name}}</p>
+        <p><b>备注:</b> {{item.deduct_remark}}</p>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+
+  <!-- 抵扣或归还记录-->
+  <ng-container *ngIf="formType=='purchasing_plan' && todoDetails">
+    <h3>物品列表--货号视图</h3>
+    <ng-container *ngFor="let item of todoDetails.list">
+        <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-label>
+            <p><b>注册证名称:</b> {{item.goods_name}}</p>
+            <p><b>厂商/品牌:</b> {{item.brand_name}}/{{item.series_name}}</p>
+            <p><b>货号:</b> {{item.ref}}</p>
+            <p><b>规格:</b> {{item.category_name}}</p>
+          </ion-label>
+          <ion-buttons (click)="stockMore(item)">
+            <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="item.act">
+          <ion-label>
+            <p><b>申请数量:</b> {{item.category_name}}</p>
+            <p><b>采购数量:</b> {{item.specification}}</p>
+            <p><b>采购单价:</b> {{item.cost_purchasing}}</p>
+          </ion-label>
+        </ion-item>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="lotList">
+
+    <h3>{{formType == "barter"? "易出物品列表" : formType == "invoice" ? "售出产品列表批号视图" : "申请物品列表"}}</h3>
+    <p class="total_price_apply" *ngIf="formType == 'invoice'">总金额(元) {{lotPaging.total_price_apply}}</p>
+    <ion-list *ngFor="let item of lotList">
+      
+      <!-- 调拨单物品列表 -->
+      <ng-container *ngIf="formType=='transfer'">
+        <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-label>
+            <p><b>注册证名称:</b> {{item.goods_name}}</p>
+            <p><b>货号:</b> {{item.ref}}</p>
+            <p><b>厂商/品牌:</b> {{item.brand_name}}/{{item.series_name}}</p>
+            <p><b>状态:</b> {{item.inventory_status_name}}</p>
+            <p><b>可用/库存:</b> {{item.quantity_available}}/{{item.quantity_inventory}}</p>
+          </ion-label>
+          <ion-buttons (click)="stockMore(item)">
+            <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="item.act">
+          <ion-label>
+            <p><b>商品分类:</b> {{item.category_name}}</p>
+            <p><b>系列/俗称:</b> {{item.alias_id_1_name}}/{{item.alias_id_2_name}}</p>
+            <p><b>规格:</b> {{item.specification}}</p>
+            <p><b>有效期:</b> {{item.expire}}        批号:{{item.lot}}</p>
+            <p><b>库房:</b> {{item.location_company_name}}/{{item.location_department_name}}/{{item.location_contact_name}}</p>
+            <p><b>成本:</b> {{item.cost}}</p>
+            <p><b>更新时间:</b> {{setTime(item.inventory_time)}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+      
+      <!-- 采购申请单物品列表 or 计划采购 -->
+      <ng-container *ngIf="formType=='purchasing_requisition' || formType == 'purchasing_plan'">
+        <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-label>
+            <p><b>注册证名称:</b> {{item.goods_name}}</p>
+            <p><b>厂商:</b> {{item.brand_name}}</p>
+            <p><b>货号:</b> {{item.ref}}</p>
+            <p><b>规格:</b> {{item.category_name}}</p>
+          </ion-label>
+          <ion-buttons (click)="stockMore(item)">
+            <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="item.act">
+          <ion-label>
+            <p><b>申请数量:</b> {{item.quantity_apply}}</p>
+            <p><b>采购数量:</b> {{item.quantity_distribution}}</p>
+            <p><b>采购单价:</b> {{item.cost_distribution}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+  
+      <!-- 盘盈入库物品列表 -->
+      <ng-container *ngIf="formType=='in'">
+        <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-label>
+            <p><b>注册证名称:</b> {{item.goods_name}}</p>
+            <p><b>厂商名称:</b> {{item.brand_name}}</p>
+            <p><b>系列名称:</b> {{item.series_name}}</p>
+            <p><b>货号:</b> {{item.ref}}</p>
+            <p><b>规格:</b> {{item.specification}}</p>
+          </ion-label>
+          <ion-buttons (click)="stockMore(item)">
+            <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="item.act">
+          <ion-label>
+            <p><b>有效期:</b> {{item.expire}}</p>
+            <p><b>批号:</b> {{item.lot}}</p>
+            <p><b>数量:</b> {{item.quantity}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+  
+      <!-- 盘亏出库物品列表 or 易货 -->
+      <ng-container *ngIf="formType=='out' || formType=='barter'">
+        <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-label>
+            <p><b>注册证名称:</b> {{item.goods_name}}</p>
+            <p><b>厂商名称:</b> {{item.brand_name}}</p>
+            <p><b>系列名称:</b> {{item.series_name}}</p>
+            <p><b>货号:</b> {{item.ref}}</p>
+            <p><b>规格:</b> {{item.specification}}</p>
+          </ion-label>
+          <ion-buttons (click)="stockMore(item)">
+            <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="item.act">
+          <ion-label>
+            <p><b>有效期:</b> {{item.expire}}</p>
+            <p><b>批号:</b> {{item.lot}}</p>
+            <p><b>采购单价:</b> {{item.cost}}</p>
+            <p><b>合计价:</b> {{item.sum_cost}}</p>
+            <p><b>库存数量:</b> {{item.quantity_inventory}}</p>
+            <p><b>可用数量:</b> {{item.quantity_available}}</p>
+            <p><b>申请数量:</b> {{item.quantity_apply}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+  
+      <!-- 内部借货物品列表 or 销售订单-->
+      <ng-container *ngIf="formType=='borrowing_inner' || formType == 'order'">
+        <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-label>
+            <p><b>注册证名称:</b> {{item.goods_name}}</p>
+            <p><b>货号:</b> {{item.ref}}</p>
+            <p><b>厂商/品牌:</b> {{item.brand_name}}/{{item.series_name}}</p>
+            <p><b>状态:</b> {{item.inventory_status_name}}</p>
+            <p><b>可用/库存:</b> {{item.quantity_available}}/{{item.quantity_inventory}}</p>
+          </ion-label>
+          <ion-buttons (click)="stockMore(item)">
+            <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="item.act">
+          <ion-label>
+            <p><b>商品分类:</b> {{item.category_name}}</p>
+            <p><b>系列/俗称:</b> {{item.alias_id_1_name}}/{{item.alias_id_2_name}}</p>
+            <p><b>规格:</b> {{item.specification}}</p>
+            <p><b>有效期:</b> {{item.expire}}        批号:{{item.lot}}</p>
+            <p><b>库房:</b> {{item.location_company_name}}/{{item.location_department_name}}/{{item.location_contact_name}}</p>
+            <p><b>成本:</b> {{item.cost}}</p>
+            <p><b>申请数量:</b> {{item.quantity_apply}}</p>
+            <p *ngIf="formType == 'borrowing_inner'"><b>发货数量:</b> {{item.quantity_out}}</p>
+            <p *ngIf="formType == 'order'"><b>销售单价:</b> {{item.price_apply}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+  
+      <!-- 售货发票 物品列表-->
+      <ng-container *ngIf="formType=='invoice'">
+        <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-label>
+            <p><b>注册证名称:</b> {{item.goods_name}}</p>
+            <p><b>厂商名称:</b> {{item.brand_name}}</p>
+            <p><b>品牌名称:</b> {{item.series_name}}</p>
+            <p><b>货号:</b> {{item.ref}}</p>
+            <p><b>规格:</b> {{item.specification}}</p>
+            <p><b>批号:</b> {{item.lot}}</p>
+          </ion-label>
+          <ion-buttons (click)="stockMore(item)">
+            <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+        <ion-item *ngIf="item.act">
+          <ion-label>
+            <p><b>有效期:</b> {{item.expire}}</p>
+            <p><b>数量:</b> {{item.quantity_apply}}</p>
+            <p><b>销售单价:</b> {{item.price_apply}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+  
+    </ion-list>
+    <!-- 分页 -->
+    <div class="page">
+      <ion-item>
+        <span>共{{msgTotal}}条</span>
+        <span>{{page}}/{{pageNum}}</span>
+        <ion-item slot="end" lines="none">
+          <span>跳到</span>
+          <ion-input type="number" [(ngModel)]="pageKey" (keyup) = "pageKeyUp($event)"></ion-input>
+          <span>页</span>
+        </ion-item>
+      </ion-item>
+      <ion-item>
+        <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "selectSizeChange($event)">
+          <ion-select-option value="10" [selected] = "msgZize === 10 ? true : false">每页10条</ion-select-option>
+          <ion-select-option value="20" [selected] = "msgZize === 20 ? true : false">每页20条</ion-select-option>
+          <ion-select-option value="30" [selected] = "msgZize === 30 ? true : false">每页30条</ion-select-option>
+          <ion-select-option value="50" [selected] = "msgZize === 50 ? true : false">每页50条</ion-select-option>
+        </ion-select>
+        <div class="next-page">
+          <ion-button [color]="page <= 1 ? 'light' : null" (click)="nextPage(0)">上一页</ion-button>
+          <ion-button [color]="page >= pageNum ? 'light' : null" (click)="nextPage(1)">下一页</ion-button>
+        </div>
+      </ion-item>
+    </div>
+
+  </ng-container>
+  
+
+  <ng-container *ngIf="formType=='barter'">
+
+  
+  <h3>易入物品列表</h3>
+  <ion-list *ngFor="let item of lotLists">
+    
+    <ion-item [lines]="item.act ? 'none' : 'inset'">
+      <ion-label>
+        <p><b>注册证名称:</b> {{item.goods_name}}</p>
+        <p><b>厂商名称:</b> {{item.brand_name}}</p>
+        <p><b>系列名称:</b> {{item.series_name}}</p>
+        <p><b>货号:</b> {{item.ref}}</p>
+        <p><b>规格:</b> {{item.specification}}</p>
+      </ion-label>
+      <ion-buttons (click)="stockMore(item)">
+        <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+    <ion-item *ngIf="item.act">
+      <ion-label>
+        <p><b>有效期:</b> {{item.expire}}</p>
+        <p><b>批号:</b> {{item.lot}}</p>
+        <p><b>采购单价:</b> {{item.cost}}</p>
+        <p><b>合计价:</b> {{item.sum_cost}}</p>
+        <p><b>库存数量:</b> {{item.quantity_inventory}}</p>
+        <p><b>可用数量:</b> {{item.quantity_available}}</p>
+        <p><b>申请数量:</b> {{item.quantity_apply}}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+  <!-- 分页 -->
+  <div class="page">
+    <ion-item>
+      <span>共{{msgTotals}}条</span>
+      <span>{{pages}}/{{pageNums}}</span>
+      <ion-item slot="end" lines="none">
+        <span>跳到</span>
+        <ion-input type="number" [(ngModel)]="pageKey" (keyup) = "pageKeyUp($event)"></ion-input>
+        <span>页</span>
+      </ion-item>
+    </ion-item>
+    <ion-item>
+      <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "selectSizeChange($event)">
+        <ion-select-option value="10" [selected] = "msgZize === 10 ? true : false">每页10条</ion-select-option>
+        <ion-select-option value="20" [selected] = "msgZize === 20 ? true : false">每页20条</ion-select-option>
+        <ion-select-option value="30" [selected] = "msgZize === 30 ? true : false">每页30条</ion-select-option>
+        <ion-select-option value="50" [selected] = "msgZize === 50 ? true : false">每页50条</ion-select-option>
+      </ion-select>
+      <div class="next-page">
+        <ion-button [color]="page <= 1 ? 'light' : null" (click)="nextPage(0)">上一页</ion-button>
+        <ion-button [color]="page >= pageNum ? 'light' : null" (click)="nextPage(1)">下一页</ion-button>
+      </div>
+    </ion-item>
+  </div>
+  </ng-container>
+
+  <ion-item class="btns" lines="none" *ngIf="todoDetails">
+    <!-- 调拨 -->
+    <ion-button *ngIf="formType=='transfer' && todoDetails.form_status == 5" (click)="clickBtn('','form-transfer/receipt','')">确认收货</ion-button>
+    <!-- 采购申请 -->
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3" (click)="clickBtn('audit','form-purchasing-requisition/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3" (click)="clickBtn('audit','form-purchasing-requisition/audit2',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 10" (click)="clickBtn('audit','form-purchasing-requisition/cancel-audit',{audit:11})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 10" (click)="clickBtn('audit','form-purchasing-requisition/cancel-audit',{audit:4})">拒绝撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3 || formType=='purchasing_requisition' && todoDetails.requisition_status == 5" (click)="clickBtn('remark','form-purchasing-requisition/cancel-apply',{remark:'1'})">申请撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 7" (click)="clickBtn('','form-purchasing-requisition/receipt','')">确认收货</ion-button>
+    <!-- 计划采购 -->
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-plan/audit1',{audit:4})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-plan/audit1',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-plan/audit2',{audit:7})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-plan/audit2',{audit:5})">拒绝撤销</ion-button>
+    <!-- 例外采购 -->
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-exception/audit1',{audit:4})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-exception/audit1',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-exception/audit2',{audit:7})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-exception/audit2',{audit:5})">拒绝撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 4" (click)="clickBtn('remark','form-purchasing-exception/cancel',{remark:'1'})">申请撤销</ion-button>
+    <!-- 盘盈入库 -->
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-in/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-in/audit1',{audit:2})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-in/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-in/audit2',{audit:2})">财务拒绝</ion-button>
+    <!-- 盘亏出库 -->
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-out/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-out/audit1',{audit:2})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-out/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-out/audit2',{audit:2})">财务拒绝</ion-button>
+    <!-- 易货 -->
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-barter/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-barter/audit1',{audit:2})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-barter/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-barter/audit2',{audit:2})">财务拒绝</ion-button>
+    <!-- 销售订单 -->
+    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 5" (click)="clickBtn('audit','form-order/cancel-audit',{audit:7})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 5" (click)="clickBtn('audit','form-order/cancel-audit',{audit:3})">拒绝撤销</ion-button>
+    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 3" (click)="clickBtn('remark','form-order/cancel-apply',{remark:'1'})">申请撤销</ion-button>
+    <!-- 售货发票 -->
+    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-invoice/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-invoice/audit1',{audit:4})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 5" (click)="clickBtn('','form-invoice/receipt',{})">确认收票</ion-button>
+    <!-- 预付账款 -->
+    <ion-button *ngIf="formType=='prepayment' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-prepayment/audit1',{audit:4})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='prepayment' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-prepayment/audit1',{audit:2})">财务拒绝</ion-button>
+  </ion-item>
+
+  <h3>操作记录</h3>
+  <ng-container *ngIf="todoDetails">
+    <ion-item *ngFor="let item of todoDetails.form_log">
+      <ion-label>
+        <p><b>操作时间:</b>  {{setTime(item.log_time)}}</p>
+        <p><b>操作人:</b>   {{item.log_user_real_name}}</p>
+        <p><b>状态:</b>  {{item.log_status_name}}</p>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+  
+</ion-content>

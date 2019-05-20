@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController,Platform } from '@ionic/angular';
 import { AppGlobal,AppService,CommonMethods } from "../../app/config/config.service";
 
 // Router
@@ -20,8 +20,16 @@ export class Tab1Page {
   todoStatus:number = 1;
   page:number = 1;
   pageKey:number = 1;
-  constructor(private menu:MenuController,private appGlobal:AppGlobal, private appService:AppService, private commonMethods:CommonMethods, private router: Router) { 
+  constructor(
+    private menu:MenuController,
+    private appGlobal:AppGlobal, 
+    private appService:AppService, 
+    private commonMethods:CommonMethods, 
+    private router: Router
+  ) {
     this.getData();
+    console.log("A">="a");
+    
   }
 
   ngOnInit() {
@@ -29,7 +37,9 @@ export class Tab1Page {
   // 已读标识
   readTypeChange(e:any){
     this.todoStatus = e.detail.value;
+    this.page = 1;
     this.getData();
+    this.menu.close();
     console.log(this.todoStatus);
   }
   // 一页多少条
@@ -55,7 +65,7 @@ export class Tab1Page {
   }
   // 消息列表
   getData(){
-    this.appService.post(AppGlobal.BASE_URL+"my/todo-search",{
+    this.appService.post(AppGlobal.BASE_URL()+"my/todo-search",{
       todo_status:this.todoStatus,
       page:this.page,
       size:this.msgZize,
@@ -73,18 +83,7 @@ export class Tab1Page {
   }
   // 消息详情
   msgDetailsClick(item:any){
-    if(item.is_read){
-      return false;
-    }
-    console.log(item.is_read);
-    
-    this.appService.post(AppGlobal.BASE_URL+"my/msg-detail",{id:item.id}).then(xhr=>{
-      console.log(xhr);
-      let data:any = xhr;
-      if(data.code == 0){
-        item.is_read = 1;
-      }
-    });
+    this.router.navigate(["/todo-details"],{queryParams:{id:item.form_id,type:item.form_type}});
   }
   // 上一页/下一页
   nextPage(type:number){

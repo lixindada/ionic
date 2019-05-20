@@ -7,15 +7,30 @@
 <ion-content>
   <div class="my">
     <ul class="my-details" *ngIf="myInfo">
-      <li class="clearfix"><span>用户名</span><span>{{myInfo.user_name}}</span></li>
-      <li class="clearfix"><span>真实姓名</span><span>{{myInfo.real_name}}</span></li>
-      <li class="clearfix"><span>角色</span><span>{{myInfo.role_name}}</span></li>
-      <li class="clearfix"><span>手机号</span><span>{{myInfo.mobile}}</span></li>
-      <!-- <li class="clearfix"><span>密码</span><span>******</span></li> -->
+      <ion-item>
+        <ion-label>用户名</ion-label>
+        <ion-buttons slot="end">{{myInfo.user_name}}</ion-buttons>
+      </ion-item>
+      <ion-item>
+        <ion-label>真实姓名</ion-label>
+        <ion-buttons slot="end">{{myInfo.real_name}}</ion-buttons>
+      </ion-item>
+      <ion-item>
+        <ion-label>角色</ion-label>
+        <ion-buttons slot="end">{{myInfo.role_name}}</ion-buttons>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>手机号</ion-label>
+        <ion-buttons slot="end">{{myInfo.mobile}}</ion-buttons>
+      </ion-item>
     </ul>
     <ul>
-      <li (click)="editPwd()">修改密码</li>
-      <li (click)="logout()">登出</li>
+      <ion-item (click)="editPwd()">
+        <ion-label>修改密码</ion-label>
+      </ion-item>
+      <ion-item (click)="logout()" lines="none">
+        <ion-label>登出</ion-label>
+      </ion-item>
     </ul>
   </div>
 </ion-content>

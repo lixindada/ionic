@@ -13,41 +13,46 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- 筛选栏 -->
+<ion-menu side="start" swipeGesture="true" menuId="first">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>筛选项</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label>消息状态</ion-label>
+        <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "readTypeChange($event)">
+          <ion-select-option value="0" [selected] = "readType === 0 ? true : false">未读</ion-select-option>
+          <ion-select-option value="1" [selected] = "readType === 1 ? true : false">已读</ion-select-option>
+          <ion-select-option value="2" [selected] = "readType === 2 ? true : false">全部</ion-select-option>
+        </ion-select>
+      </ion-item>      
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-router-outlet main></ion-router-outlet>
+
 <ion-content>
-  <ion-menu side="start" swipeGesture="true" menuId="first">
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>筛选项</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-list>
-        <ion-item>
-          <ion-label>消息状态</ion-label>
-          <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "readTypeChange($event)">
-            <ion-select-option value="0" [selected] = "readType === 0 ? true : false">未读</ion-select-option>
-            <ion-select-option value="1" [selected] = "readType === 1 ? true : false">已读</ion-select-option>
-            <ion-select-option value="2" [selected] = "readType === 2 ? true : false">全部</ion-select-option>
-          </ion-select>
-        </ion-item>      
-      </ion-list>
-    </ion-content>
-  </ion-menu>
-  <ion-router-outlet main></ion-router-outlet>
   
   <!-- 消息列表 -->
   <ion-list>
     <ng-container *ngIf="messageList">
       
-      <ion-item *ngFor="let item of messageList" (click)="msgDetailsClick(item)">
-        <ion-label>
-          <h3>{{item.subject}}</h3>
-          <p>{{item.created_time}}</p>
-        </ion-label>
-        <ion-button [color]="item.is_read ? 'secondary' : ''" slot="end">
-          {{item.is_read ? "已读" : "未读"}}
-        </ion-button>
-      </ion-item>
+      <!-- <ion-card> -->
+        <ion-item *ngFor="let item of messageList" (click)="msgDetailsClick(item)">
+          <ion-label>
+            <h3>{{item.subject}}</h3>
+            <p>{{item.created_time}}</p>
+          </ion-label>
+          <ion-button [color]="item.is_read ? 'secondary' : ''" slot="end">
+            {{item.is_read ? "已读" : "未读"}}
+          </ion-button>
+        </ion-item>
+      <!-- </ion-card> -->
+
     </ng-container>
   </ion-list>
 

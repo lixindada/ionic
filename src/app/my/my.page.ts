@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,HostListener } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AppGlobal,AppService,CommonMethods } from "../../app/config/config.service";
 import { ModalPage } from '../modal/modal.page';
+
+
 
 // Router
 import { Router } from '@angular/router';
@@ -22,7 +24,7 @@ export class MyPage implements OnInit {
   // load 
   onload(){
     const data = {};
-    this.appService.post(AppGlobal.BASE_URL+"my/detail",data).then(xhr=>{
+    this.appService.post(AppGlobal.BASE_URL()+"my/detail",data).then(xhr=>{
       console.log(xhr);
       let data:any;
       data = xhr;
@@ -55,7 +57,7 @@ export class MyPage implements OnInit {
   // 登出
   logout(){
     const data = {};
-    this.appService.post(AppGlobal.BASE_URL+"my/logout",data).then(xhr=>{
+    this.appService.post(AppGlobal.BASE_URL()+"my/logout",data).then(xhr=>{
       let data:any;
       data = xhr;
       if(data.code == 0){

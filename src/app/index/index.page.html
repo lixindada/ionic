@@ -8,52 +8,162 @@
         筛选
       </ion-button>
     </ion-buttons>
-    <ion-searchbar placeholder="请输入关键字"></ion-searchbar>
+    <ion-searchbar placeholder="请输入关键字" [(ngModel)]="keyword"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
+<ion-menu side="start" swipeGesture="true" menuId="indexMenu">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>筛选项</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item (click)="openPicker('goodBrandist',goodBrandist,'')">
+        <ion-label>厂商/品牌</ion-label>
+        <ion-label>{{brandObj.text}}{{seriesObj.text!="" ? "/" : null}}{{seriesObj.text}}</ion-label>
+      </ion-item>
+      
+      <ion-item (click)="openPicker('companyList',companyList,'')">
+        <ion-label>所在库房</ion-label>
+        <ion-label>{{companyObj.text}}{{departmentObj.text!="" ? "/" : null}}{{departmentObj.text}}{{contactObj.text!="" ? "/" : null}}{{contactObj.text}}</ion-label>
+      </ion-item>
+
+      <ion-item (click)="openPicker('goodsAliasList',goodsAliasList,'')">
+        <ion-label>系列/俗称</ion-label>
+        <ion-label *ngIf="alias1Obj && alias2Obj">{{alias1Obj.text}}{{alias2Obj.text!="" ? "/" : null}}{{alias2Obj.text}}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>有效期(始)</ion-label>
+        <ion-datetime display-format="YYYY-MM-DD" cancelText="取消" doneText="确定" mode="ios" [(ngModel)]="timeStartValue"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>有效期(末)</ion-label>
+        <ion-datetime [disabled] = "timeStartValue!='' ? false : true" display-format="YYYY-MM-DD" cancelText="取消" doneText="确定" mode="ios" [(ngModel)]="timeEndValue" [min]="timeStartValue" (ionChange)="timeChange()"></ion-datetime>
+      </ion-item>
+              
+      <ion-item>
+        <ion-label>商品分类</ion-label>
+        <ion-select okText="确定" cancelText="取消" (ionChange) = "selectFun($event,'category_id')">
+          <ion-select-option value="">请选择</ion-select-option>
+          <ion-select-option (value)="item.id" *ngFor="let item of classList">{{item.category_name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>商品状态</ion-label>
+        <ion-select okText="确定" cancelText="取消" multiple="true">
+          <ion-select-option value="item.inventory_status_name" *ngFor="let item of statusList">{{item.inventory_status_name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item (click)="clearStatus()">
+        清除所有筛选状态
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-router-outlet main></ion-router-outlet>
+
 <ion-content>
-  <ion-menu side="start" swipeGesture="true" menuId="indexMenu">
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>筛选项</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-list>
-        
-        <ion-item>
-          <ion-label>厂商/品牌</ion-label>
-          <!-- <ion-multi-picker item-content [multiPickerColumns]="cityColumns" [cancelText]="'取消'" [doneText]="'完成'"></ion-multi-picker> -->
-        </ion-item>
-
-        <ion-item>
-          <ion-label>有效期(始)</ion-label>
-          <ion-datetime display-format="YYYY-MM-DD" cancelText="取消" doneText="确定" mode="ios" [(ngModel)]="timeStartValue" (ionChange)="timeChange()"></ion-datetime>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>有效期(末)</ion-label>
-          <ion-datetime display-format="YYYY-MM-DD" cancelText="取消" doneText="确定" mode="ios" [(ngModel)]="timeStartValue" (ionChange)="timeChange()"></ion-datetime>
-        </ion-item>
-                
-        <ion-item>
-          <ion-label>商品分类</ion-label>
-          <ion-select okText="确定" cancelText="取消">
-            <ion-select-option value="">请选择</ion-select-option>
-            <ion-select-option value="item.category_id" *ngFor="let item of classList">{{item.category_name}}</ion-select-option>
-          </ion-select>
-        </ion-item>
-        
-        <ion-item>
-            <ion-label>商品状态</ion-label>
-            <ion-select okText="确定" cancelText="取消" multiple="true">
-              <ion-select-option value="item.inventory_status_name" *ngFor="let item of statusList">{{item.inventory_status_name}}</ion-select-option>
-            </ion-select>
-          </ion-item>      
-      </ion-list>
-    </ion-content>
-  </ion-menu>
   
-  <ion-router-outlet main></ion-router-outlet>
+  <!-- 表格 -->
+  <div class="tableDiv">
+    <table *ngIf="stockList" cellpadding="10" cellspacing="10">
+      <tr>
+        <th nowrap>注册证名称</th>
+        <th nowrap>货号</th>
+        <th nowrap>厂商/品牌</th>
+        <th nowrap>状态</th>
+        <th nowrap>可用/库存</th>
+        <th nowrap>商品分类</th>
+        <th nowrap>系列/俗称</th>
+        <th nowrap>规格</th>
+        <th nowrap>有效期</th>
+        <th nowrap>库房</th>
+        <th nowrap>成本</th>
+        <th nowrap>更新时间</th>
+      </tr>
+      <tr *ngFor="let item of stockList">
+        <td nowrap>{{item.goods_name}}</td>
+        <td nowrap>{{item.ref}}</td>
+        <td nowrap>{{item.brand_name}}/{{item.series_name}}</td>
+        <td nowrap>{{item.inventory_status_name}}</td>
+        <td nowrap>{{item.quantity_available}}/{{item.quantity_inventory}}</td>
+        <td nowrap>{{item.category_name}}</td>
+        <td nowrap>{{item.alias_id_1_name}}/{{item.alias_id_2_name}}</td>
+        <td nowrap>{{item.expire}}</td>
+        <td nowrap>{{item.location_company_name}}</td>
+        <td nowrap>{{item.cost}}</td>
+        <td nowrap>{{item.goods_name}}</td>
+        <td nowrap>{{setTime(item.inventory_time)}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 库存列表 -->
+  <ion-list>
+    <ng-container *ngIf="stockList">
+      <ion-list *ngFor="let item of stockList">
+
+        <ion-card>
+
+          <ion-item [lines]="item.act ? 'none' : 'inset'">
+            <ion-label>
+              <p><b>注册证名称:</b> {{item.goods_name}}</p>
+              <p><b>货号:</b> {{item.ref}}</p>
+              <p><b>厂商/品牌:</b> {{item.brand_name}}/{{item.series_name}}</p>
+              <p><b>状态:</b> {{item.inventory_status_name}}</p>
+              <p><b>可用/库存:</b> {{item.quantity_available}}/{{item.quantity_inventory}}</p>
+            </ion-label>
+            <ion-buttons (click)="stockMore(item)">
+              <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
+            </ion-buttons>
+          </ion-item>
+          <ion-item *ngIf="item.act">
+            <ion-label>
+              <p><b>商品分类:</b> {{item.category_name}}</p>
+              <p><b>系列/俗称:</b> {{item.alias_id_1_name}}/{{item.alias_id_2_name}}</p>
+              <p><b>规格:</b> {{item.specification}}</p>
+              <p><b>有效期:</b> {{item.expire}}        批号:{{item.lot}}</p>
+              <p><b>库房:</b> {{item.location_company_name}}/{{item.location_department_name}}/{{item.location_contact_name}}</p>
+              <p><b>成本:</b> {{item.cost}}</p>
+              <p><b>更新时间:</b> {{setTime(item.inventory_time)}}</p>
+            </ion-label>
+          </ion-item>
+
+        </ion-card>
+
+      </ion-list>
+    </ng-container>
+  </ion-list>
+
+  <!-- 分页 -->
+  <div class="page">
+    <ion-item>
+      <span>共{{msgTotal}}条</span>
+      <span>{{page}}/{{pageNum}}</span>
+      <ion-item slot="end" lines="none">
+        <span>跳到</span>
+        <ion-input type="number" [(ngModel)]="pageKey" (keyup) = "pageKeyUp($event)"></ion-input>
+        <span>页</span>
+      </ion-item>
+    </ion-item>
+    <ion-item>
+      <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "selectSizeChange($event)">
+        <ion-select-option value="10" [selected] = "msgZize === 10 ? true : false">每页10条</ion-select-option>
+        <ion-select-option value="20" [selected] = "msgZize === 20 ? true : false">每页20条</ion-select-option>
+        <ion-select-option value="30" [selected] = "msgZize === 30 ? true : false">每页30条</ion-select-option>
+        <ion-select-option value="50" [selected] = "msgZize === 50 ? true : false">每页50条</ion-select-option>
+      </ion-select>
+      <div class="next-page">
+        <ion-button [color]="page <= 1 ? 'light' : null" (click)="nextPage(0)">上一页</ion-button>
+        <ion-button [color]="page >= pageNum ? 'light' : null" (click)="nextPage(1)">下一页</ion-button>
+      </div>
+    </ion-item>
+  </div>
 </ion-content>

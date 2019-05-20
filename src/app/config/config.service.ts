@@ -8,7 +8,18 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AppGlobal {
   // static BASE_URL='http://172.168.30.230:7001/';
-  static BASE_URL='/apidata/';
+  // static BASE_URL='/apidata/';
+  static BASE_URL () {
+    const ua = navigator.userAgent;
+    let url = "http://172.168.30.230:7001/";
+    if(/MRA58N/i.test(ua)){
+      url = "/apidata/";
+    }
+    return url;
+  }
+  constructor(){
+    console.log();
+  }
 }
 
 @Injectable()
@@ -18,7 +29,7 @@ export class AppService  {
   // post
   post(url:string,param:any) {
     const that = this;
-      console.log(url,param);
+      // console.log(url,param);
       return new Promise( function(resolve, reject) {
         // pc test
         // ---------------------------------------------------------------------------
@@ -30,7 +41,7 @@ export class AppService  {
         });
           that.httpPc.post(url,param, {headers:headers}).subscribe(
             (val) => {
-              console.log("POST call successful value returned in body", val);
+              // console.log("POST call successful value returned in body", val);
               let datas:any;
               datas = val;
               if(datas.code == 401){
@@ -40,15 +51,16 @@ export class AppService  {
               resolve(datas);
             },
             response => {
-                console.log("POST call in error", response);
+                // console.log("POST call in error", response);
             },
             () => {
-                console.log("The POST observable is now completed.");
+                // console.log("The POST observable is now completed.");
             }
           );
         } else {
           //------------------------------------------------------------------------------
-          that.http.post(url, param, {"x-token":localStorage.getItem("app-Token") || ""})
+          that.http.setDataSerializer('json');
+          that.http.post(url, param, {"x-token":localStorage.getItem("app-Token") || "","Content-Type": "application/json"})
           .then(data => {
             console.log("lxx");
             console.log(data);
@@ -88,7 +100,7 @@ export class AppService  {
         });
           that.httpPc.get(url,{headers:headers}).subscribe(
             (val) => {
-              console.log("POST call successful value returned in body", val);
+              // console.log("POST call successful value returned in body", val);
               let datas:any;
               datas = val;
               if(datas.code == 401){
@@ -98,10 +110,10 @@ export class AppService  {
               resolve(datas);
             },
             response => {
-                console.log("POST call in error", response);
+                // console.log("POST call in error", response);
             },
             () => {
-                console.log("The POST observable is now completed.");
+                // console.log("The POST observable is now completed.");
             }
           );
         } else {

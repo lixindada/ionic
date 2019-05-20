@@ -9,31 +9,32 @@
           筛选
         </ion-button>
       </ion-buttons>
-      <ion-searchbar placeholder="请输入关键字" [(ngModel)]="searchVal" (ionChange) = "searchFun()"></ion-searchbar>
+      <ion-searchbar placeholder="搜索货号/批号" [(ngModel)]="searchVal" (ionChange) = "searchFun()"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
   
+  <ion-menu side="start" swipeGesture="true" menuId="dealtMenu">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>筛选项</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>消息状态</ion-label>
+          <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "readTypeChange($event)">
+            <ion-select-option value="1" [selected] = "todoStatus === 1 ? true : false">未完成</ion-select-option>
+            <ion-select-option value="2" [selected] = "todoStatus === 2 ? true : false">已完成</ion-select-option>
+            <ion-select-option value="0" [selected] = "todoStatus === 0 ? true : false">全部</ion-select-option>
+          </ion-select>
+        </ion-item>      
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet main></ion-router-outlet>
+  
   <ion-content>
-    <ion-menu side="start" swipeGesture="true" menuId="dealtMenu">
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-title>筛选项</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-list>
-          <ion-item>
-            <ion-label>消息状态</ion-label>
-            <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "readTypeChange($event)">
-              <ion-select-option value="1" [selected] = "todoStatus === 1 ? true : false">未完成</ion-select-option>
-              <ion-select-option value="2" [selected] = "todoStatus === 2 ? true : false">已完成</ion-select-option>
-              <ion-select-option value="0" [selected] = "todoStatus === 0 ? true : false">全部</ion-select-option>
-            </ion-select>
-          </ion-item>      
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet main></ion-router-outlet>
     
     <!-- 消息列表 -->
     <ion-list>
@@ -75,4 +76,9 @@
         </div>
       </ion-item>
     </div>
+
+    <!-- tabel -->
+    <table>
+      <tr></tr>
+    </table>
   </ion-content>  

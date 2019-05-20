@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-import { IndexPage } from './index.page';
+
+import { TodoDetailsPage } from './todo-details.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: IndexPage
+    component: TodoDetailsPage
   }
 ];
 
@@ -20,7 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [IndexPage],
-  entryComponents: []
+  declarations: [TodoDetailsPage]
 })
-export class IndexPageModule {}
+export class TodoDetailsPageModule {}

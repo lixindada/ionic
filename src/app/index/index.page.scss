@@ -1,0 +1,46 @@
+.page{
+    >ion-item{
+        &:nth-of-type(1){
+            span{
+                &:nth-of-type(1){
+                    padding-right: 16px;
+                }
+            }
+        }
+    }
+    ion-input{
+        width: 50px;
+    }
+    ion-select{
+        width: 100px;
+    }
+    .next-page{
+        position: absolute;
+        z-index: 22;
+        right: 20px;
+    }
+}
+ion-card{
+    padding: 10px 0;
+}
+.tableDiv{
+    width: 100%;
+    overflow-x: auto;
+}
+table{
+    tr{
+        word-break: keep-all;
+        &:nth-of-type(2n+1) td{
+            background: #f1f1f1;
+        }
+        th{
+            padding: 0 10px;
+            background: #ccc;
+            line-height: 30px;
+        }
+        td{
+            padding: 0 10px;
+            word-break: keep-all;
+        }
+    }
+}

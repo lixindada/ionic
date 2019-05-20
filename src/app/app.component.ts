@@ -30,6 +30,15 @@ export class AppComponent {
       // 极光推送
       jpush.init();
       jpush.setDebugMode(true);
+      // jpush.getRegistrationID().then((value:any)=>{
+      //   localStorage.setItem("jp_registration_id",value);
+      //   console.log("RegistrationID="+value);
+      // });
+      // jpush.setTags({sequence:12,tags:["管理员","采购"]}).then((xhr:any)=>{
+      //   console.log("tags="+JSON.stringify(xhr));
+      // }).catch((err:any)=>{
+      //   console.log(err);
+      // })
     });
     this.initializeApp();
     this.isLogin();

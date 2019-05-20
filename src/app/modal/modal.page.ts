@@ -30,7 +30,7 @@ export class ModalPage implements OnInit {
     const data = {
       new_password:this.newPwd
     };
-    this.appService.post(AppGlobal.BASE_URL+"my/change-password",data).then(xhr=>{
+    this.appService.post(AppGlobal.BASE_URL()+"my/change-password",data).then(xhr=>{
       console.log(xhr);
       let data:any;
       data = xhr;

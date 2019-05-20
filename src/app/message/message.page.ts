@@ -30,6 +30,7 @@ export class MessagePage implements OnInit {
   readTypeChange(e:any){
     this.readType = e.detail.value;
     this.getData();
+    this.menu.close();
     console.log(this.readType);
   }
   // 一页多少条
@@ -55,7 +56,7 @@ export class MessagePage implements OnInit {
   }
   // 消息列表
   getData(){
-    this.appService.post(AppGlobal.BASE_URL+"my/msg-search",{
+    this.appService.post(AppGlobal.BASE_URL()+"my/msg-search",{
       is_read:this.readType,
       page:this.page,
       size:this.msgZize,
@@ -78,7 +79,7 @@ export class MessagePage implements OnInit {
     }
     console.log(item.is_read);
     
-    this.appService.post(AppGlobal.BASE_URL+"my/msg-detail",{id:item.id}).then(xhr=>{
+    this.appService.post(AppGlobal.BASE_URL()+"my/msg-detail",{id:item.id}).then(xhr=>{
       console.log(xhr);
       let data:any = xhr;
       if(data.code == 0){

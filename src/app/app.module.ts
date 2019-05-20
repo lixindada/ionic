@@ -23,7 +23,7 @@ import { JPush } from '@jiguang-ionic/jpush/ngx';
 
 // http
 import { AppGlobal,AppService,CommonMethods } from './config/config.service';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 // file
 import { File } from '@ionic-native/file/ngx';
@@ -31,9 +31,8 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { ModalPage } from './modal/modal.page';
 import { ModalPageModule } from './modal/modal.module';
 
-// picker
-// import { MultiPickerModule } from 'ion-multi-picker';
 
+import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [
@@ -44,8 +43,7 @@ import { ModalPageModule } from './modal/modal.module';
     IonicModule.forRoot(), 
     AppRoutingModule,
     HttpClientModule,
-    ModalPageModule,
-    // MultiPickerModule
+    ModalPageModule
   ],
   providers: [
     Flashlight,
@@ -67,6 +65,7 @@ import { ModalPageModule } from './modal/modal.module';
     JPush,
     StatusBar,
     SplashScreen,
+    AppMinimize,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
