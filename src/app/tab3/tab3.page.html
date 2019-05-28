@@ -1,32 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      <p>
-        <span [ngStyle]="{'color' : tabAct===true ? 'blue' : null}" (click)="switchTab(0)">待办</span>
-        <span [ngStyle]="{'color' : tabAct===false ? 'blue' : null}" (click)="switchTab(1)">消息</span>
-      </p>
-    </ion-title>
+<ion-header >
+  <ion-toolbar >
+    <ion-title>扫描中……</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/index"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
-  <ion-button (click)="openFlashlight()">打开手电筒</ion-button>
-  <ion-button (click)="closeFlashlight()">关闭手电筒</ion-button>
-  <ion-button (click)="presentActionSheet()">弹出</ion-button>
-
-  <!-- 消息列表 -->
-  <ion-list>
-      <ng-container *ngIf="messageList">
-        <ion-card *ngFor="let item of messageList">
-          <ion-card-title>{{item.title}}</ion-card-title>
-          <ion-card-subtitle>{{item.time}}</ion-card-subtitle>
-          <ion-card-content>
-            <ion-nav animated = true>
-              <ion-text (click)="ionViewWillLeave()">查看详情1</ion-text>
-              <ion-nav-push [routerLink]="[ '/news' ]">查看详情</ion-nav-push>
-            </ion-nav>
-          </ion-card-content>
-        </ion-card>
-      </ng-container>
-    </ion-list>
-</ion-content>
+<section [ngClass]="{'qrscanner':isShow}" style="background : transparent none !important">
+  <div [ngClass]="{'qrscanner-area':isShow}">    
+  </div> 
+  <div  [ngClass]="{'through-line':isShow}"></div>
+  <div class="button-bottom">
+    <ion-button (click)="toggleLight()" class="icon-camera" margin-right>
+        <ion-icon name="flash"></ion-icon>                  
+    </ion-button>
+    <ion-button (click)="toggleCamera()" class="icon-camera">
+        <ion-icon name="reverse-camera"></ion-icon>                  
+    </ion-button>
+  </div>    
+</section>

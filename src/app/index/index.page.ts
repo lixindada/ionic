@@ -42,50 +42,40 @@ export class IndexPage implements OnInit {
   location_contact_id:any = 0;
   expire_time_begin:any = 0;
   expire_time_end:any = 0;
-  inventory_status:any = 0;
-  constructor(private menu:MenuController,private picker:PickerController,private appGlobal:AppGlobal, private appService:AppService, private commonMethods:CommonMethods, private router: Router) { 
+  inventory_status:any = [];
+  constructor(
+    private menu:MenuController,
+    private picker:PickerController,
+    private appGlobal:AppGlobal, 
+    private appService:AppService, 
+    private commonMethods:CommonMethods, 
+    private router: Router
+  ) { 
     this.getData();
     this.getStockList();
   }
 
   ngOnInit() {
   }
-  // 一页多少条
-  selectSizeChange(e:any){
-    this.msgZize = e.detail.value;
+
+  // 下拉刷新
+  doRefresh(event:any) {
+    console.log('Begin async operation');
     this.page = 1;
     this.getStockList();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
-  pageKeyUp(e:any){
-    // console.log(e);
-    if(e.keyCode == 13){
-      if(this.pageKey <= this.pageNum && this.pageKey >= 1){
-        this.page = this.pageKey;
-        this.getStockList();
-      } else {
-        this.commonMethods.toast("bottom",{},"输入的页数超出已有页数");
-      }
-    }
+
+  // 返回分页
+  checkedBack(e:any){
+    console.log(e);
+    this.page = e.page;
+    this.msgZize = e.size;
+    this.getStockList();
   }
-  // 上一页/下一页
-  nextPage(type:number){
-    console.log(type,this.page);
-    if(type){
-      console.log("+");    
-      if(this.page < this.pageNum){
-        console.log("+");
-        this.page++;
-        this.getStockList();
-      }
-    } else {
-      console.log("-");    
-      if(this.page > 1){
-        console.log("-");
-        this.page--;
-        this.getStockList();
-      }
-    }
-  }
+
   // 清楚筛选状态
   clearStatus(){
     this.page = 1;
@@ -101,6 +91,7 @@ export class IndexPage implements OnInit {
     this.contactObj = {text:"",value:0};
     this.timeStartValue = "";
     this.timeEndValue = "";
+    this.inventory_status = [];
     this.getStockList();
     this.menu.close();
   }
@@ -122,7 +113,8 @@ export class IndexPage implements OnInit {
 	    location_department_id: parseInt(this.departmentObj.value),
 	    location_contact_id: parseInt(this.contactObj.value),
 	    expire_time_begin: this.timeStartValue!="" ? this.setTime(this.timeStartValue) : "",
-	    expire_time_end: this.timeEndValue!="" ? this.setTime(this.timeEndValue) : ""
+      expire_time_end: this.timeEndValue!="" ? this.setTime(this.timeEndValue) : "",
+      inventory_status: this.inventory_status
     }).then(xhr=>{
       console.log(xhr);
       let data:any = xhr;
@@ -158,8 +150,18 @@ export class IndexPage implements OnInit {
           }
         })
         break;
-      case "brand_id":
-      // this.brand_id = e.detail.value;
+      case "inventory_status":
+        this.inventory_status = [];
+        e.detail.value.map((items:any)=>{
+          console.log(items);
+          this.statusList.map((item:any)=>{
+            console.log(item);
+            if(item.inventory_status_name == items){
+              this.inventory_status.push(item.inventory_status);
+            }
+          })
+        })
+        break;
       default:
         break;
     }
@@ -193,6 +195,10 @@ export class IndexPage implements OnInit {
           console.log(item);
           if(item.value == opt.value){
             console.log(item);
+            datas[0].options.push({
+              text:"请选择",
+              value:0,
+            });
             item.children.map((items:any)=>{
               datas[0].options.push({
                 text:items.label,
@@ -224,6 +230,10 @@ export class IndexPage implements OnInit {
           console.log(item);
           if(item.value == opt.value){
             console.log(item);
+            datas[0].options.push({
+              text:"请选择",
+              value:0,
+            });
             item.children.map((items:any)=>{
               datas[0].options.push({
                 text:items.label,
@@ -255,6 +265,10 @@ export class IndexPage implements OnInit {
           // console.log(item);
           if(item.value == opt.value){
             // console.log(item);
+            datas[0].options.push({
+              text:"请选择",
+              value:0,
+            });
             item.children.map((items:any)=>{
               datas[0].options.push({
                 text:items.label,
@@ -279,6 +293,10 @@ export class IndexPage implements OnInit {
                 console.log("lxxx");
                 console.log(items);
                 console.log("lxxx");
+                datas[0].options.push({
+                  text:"请选择",
+                  value:0,
+                });
                 items.children.map((companyItem:any)=>{
                   datas[0].options.push({
                     text:companyItem.label,

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>我的信息</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -28,7 +28,7 @@
       <ion-item (click)="editPwd()">
         <ion-label>修改密码</ion-label>
       </ion-item>
-      <ion-item (click)="logout()" lines="none">
+      <ion-item (click)="presentAlertConfirm()" lines="none">
         <ion-label>登出</ion-label>
       </ion-item>
     </ul>

@@ -1,11 +1,29 @@
 {
-    "/apidata":{
-      "target":"http://172.168.30.230:7001",
-      "secure":false,
-      "logLevel":"debug",
-      "changeOrigin":true,
-      "pathRewrite":{
-        "^/apidata":""
-      }
+  "/testapi":{
+    "target":"http://172.168.30.230:7001",
+    "secure":false,
+    "logLevel":"debug",
+    "changeOrigin":true,
+    "pathRewrite":{
+      "^/testapi":""
+    }
+  },
+  "/www":{
+    "target":"http://47.92.151.49:7001",
+    "secure":false,
+    "logLevel":"debug",
+    "changeOrigin":true,
+    "pathRewrite":{
+      "^/www":""
+    }
+  },
+  "/api":{
+    "target":"http://47.92.254.91:7001",
+    "secure":false,
+    "logLevel":"debug",
+    "changeOrigin":true,
+    "pathRewrite":{
+      "^/api":""
     }
   }
+}

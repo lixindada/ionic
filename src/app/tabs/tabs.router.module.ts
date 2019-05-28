@@ -34,6 +34,15 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'tab2',
+        children: [
+          {
+            path: '',
+            loadChildren: '../tab2/tab2.module#Tab2PageModule'
+          }
+        ]
+      },
       { path: 'my', loadChildren: '../my/my.module#MyPageModule' },
       {
         path: '',

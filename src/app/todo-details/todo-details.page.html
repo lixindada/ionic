@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>详情</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
@@ -442,51 +442,51 @@
 
   <ion-item class="btns" lines="none" *ngIf="todoDetails">
     <!-- 调拨 -->
-    <ion-button *ngIf="formType=='transfer' && todoDetails.form_status == 5" (click)="clickBtn('','form-transfer/receipt','')">确认收货</ion-button>
+    <ion-button *ngIf="formType=='transfer' && todoDetails.form_status == 5" (click)="presentAlertConfirm('','form-transfer/receipt','')">确认收货</ion-button>
     <!-- 采购申请 -->
-    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3" (click)="clickBtn('audit','form-purchasing-requisition/audit2',{audit:5})">财务通过</ion-button>
-    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3" (click)="clickBtn('audit','form-purchasing-requisition/audit2',{audit:2})">财务拒绝</ion-button>
-    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 10" (click)="clickBtn('audit','form-purchasing-requisition/cancel-audit',{audit:11})">同意撤销</ion-button>
-    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 10" (click)="clickBtn('audit','form-purchasing-requisition/cancel-audit',{audit:4})">拒绝撤销</ion-button>
-    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3 || formType=='purchasing_requisition' && todoDetails.requisition_status == 5" (click)="clickBtn('remark','form-purchasing-requisition/cancel-apply',{remark:'1'})">申请撤销</ion-button>
-    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 7" (click)="clickBtn('','form-purchasing-requisition/receipt','')">确认收货</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3" (click)="presentAlertConfirm('audit','form-purchasing-requisition/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3" (click)="presentAlertConfirm('audit','form-purchasing-requisition/audit2',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 10" (click)="presentAlertConfirm('audit','form-purchasing-requisition/cancel-audit',{audit:11})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 10" (click)="presentAlertConfirm('audit','form-purchasing-requisition/cancel-audit',{audit:4})">拒绝撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 3 || formType=='purchasing_requisition' && todoDetails.requisition_status == 5" (click)="presentAlertConfirm('remark','form-purchasing-requisition/cancel-apply',{remark:'1'})">申请撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_requisition' && todoDetails.requisition_status == 7" (click)="presentAlertConfirm('','form-purchasing-requisition/receipt','')">确认收货</ion-button>
     <!-- 计划采购 -->
-    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-plan/audit1',{audit:4})">财务通过</ion-button>
-    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-plan/audit1',{audit:2})">财务拒绝</ion-button>
-    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-plan/audit2',{audit:7})">同意撤销</ion-button>
-    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-plan/audit2',{audit:5})">拒绝撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 3" (click)="presentAlertConfirm('audit','form-purchasing-plan/audit1',{audit:4})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 3" (click)="presentAlertConfirm('audit','form-purchasing-plan/audit1',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 6" (click)="presentAlertConfirm('audit','form-purchasing-plan/audit2',{audit:7})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_plan' && todoDetails.purchasing_status == 6" (click)="presentAlertConfirm('audit','form-purchasing-plan/audit2',{audit:5})">拒绝撤销</ion-button>
     <!-- 例外采购 -->
-    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-exception/audit1',{audit:4})">财务通过</ion-button>
-    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 3" (click)="clickBtn('audit','form-purchasing-exception/audit1',{audit:2})">财务拒绝</ion-button>
-    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-exception/audit2',{audit:7})">同意撤销</ion-button>
-    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 6" (click)="clickBtn('audit','form-purchasing-exception/audit2',{audit:5})">拒绝撤销</ion-button>
-    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 4" (click)="clickBtn('remark','form-purchasing-exception/cancel',{remark:'1'})">申请撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 3" (click)="presentAlertConfirm('audit','form-purchasing-exception/audit1',{audit:4})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 3" (click)="presentAlertConfirm('audit','form-purchasing-exception/audit1',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 6" (click)="presentAlertConfirm('audit','form-purchasing-exception/audit2',{audit:7})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 6" (click)="presentAlertConfirm('audit','form-purchasing-exception/audit2',{audit:5})">拒绝撤销</ion-button>
+    <ion-button *ngIf="formType=='purchasing_exception' && todoDetails.purchasing_status == 4" (click)="presentAlertConfirm('remark','form-purchasing-exception/cancel',{remark:'1'})">申请撤销</ion-button>
     <!-- 盘盈入库 -->
-    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-in/audit1',{audit:4})">主管通过</ion-button>
-    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-in/audit1',{audit:2})">主管拒绝</ion-button>
-    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-in/audit2',{audit:5})">财务通过</ion-button>
-    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-in/audit2',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-in/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-in/audit1',{audit:2})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 4" (click)="presentAlertConfirm('audit','form-in/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='in' && todoDetails.form_status == 4" (click)="presentAlertConfirm('audit','form-in/audit2',{audit:2})">财务拒绝</ion-button>
     <!-- 盘亏出库 -->
-    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-out/audit1',{audit:4})">主管通过</ion-button>
-    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-out/audit1',{audit:2})">主管拒绝</ion-button>
-    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-out/audit2',{audit:5})">财务通过</ion-button>
-    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-out/audit2',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-out/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-out/audit1',{audit:2})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 4" (click)="presentAlertConfirm('audit','form-out/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='out' && todoDetails.form_status == 4" (click)="presentAlertConfirm('audit','form-out/audit2',{audit:2})">财务拒绝</ion-button>
     <!-- 易货 -->
-    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-barter/audit1',{audit:4})">主管通过</ion-button>
-    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-barter/audit1',{audit:2})">主管拒绝</ion-button>
-    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-barter/audit2',{audit:5})">财务通过</ion-button>
-    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 4" (click)="clickBtn('audit','form-barter/audit2',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-barter/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-barter/audit1',{audit:2})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 4" (click)="presentAlertConfirm('audit','form-barter/audit2',{audit:5})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='barter' && todoDetails.form_status == 4" (click)="presentAlertConfirm('audit','form-barter/audit2',{audit:2})">财务拒绝</ion-button>
     <!-- 销售订单 -->
-    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 5" (click)="clickBtn('audit','form-order/cancel-audit',{audit:7})">同意撤销</ion-button>
-    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 5" (click)="clickBtn('audit','form-order/cancel-audit',{audit:3})">拒绝撤销</ion-button>
-    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 3" (click)="clickBtn('remark','form-order/cancel-apply',{remark:'1'})">申请撤销</ion-button>
+    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 5" (click)="presentAlertConfirm('audit','form-order/cancel-audit',{audit:7})">同意撤销</ion-button>
+    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 5" (click)="presentAlertConfirm('audit','form-order/cancel-audit',{audit:3})">拒绝撤销</ion-button>
+    <ion-button *ngIf="formType=='order' && todoDetails.form_status == 3" (click)="presentAlertConfirm('remark','form-order/cancel-apply',{remark:'1'})">申请撤销</ion-button>
     <!-- 售货发票 -->
-    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-invoice/audit1',{audit:4})">主管通过</ion-button>
-    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-invoice/audit1',{audit:4})">主管拒绝</ion-button>
-    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 5" (click)="clickBtn('','form-invoice/receipt',{})">确认收票</ion-button>
+    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-invoice/audit1',{audit:4})">主管通过</ion-button>
+    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-invoice/audit1',{audit:4})">主管拒绝</ion-button>
+    <ion-button *ngIf="formType=='invoice' && todoDetails.form_status == 5" (click)="presentAlertConfirm('','form-invoice/receipt',{})">确认收票</ion-button>
     <!-- 预付账款 -->
-    <ion-button *ngIf="formType=='prepayment' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-prepayment/audit1',{audit:4})">财务通过</ion-button>
-    <ion-button *ngIf="formType=='prepayment' && todoDetails.form_status == 3" (click)="clickBtn('audit','form-prepayment/audit1',{audit:2})">财务拒绝</ion-button>
+    <ion-button *ngIf="formType=='prepayment' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-prepayment/audit1',{audit:4})">财务通过</ion-button>
+    <ion-button *ngIf="formType=='prepayment' && todoDetails.form_status == 3" (click)="presentAlertConfirm('audit','form-prepayment/audit1',{audit:2})">财务拒绝</ion-button>
   </ion-item>
 
   <h3>操作记录</h3>

@@ -1,5 +1,8 @@
 <ion-header>
     <!-- bar -->
+    <ion-toolbar color="primary">
+      <ion-title>待办</ion-title>
+    </ion-toolbar>
     <ion-toolbar>
       <ion-buttons slot="primary">
         <ion-button (click)="clickedSearch()">
@@ -9,7 +12,7 @@
           筛选
         </ion-button>
       </ion-buttons>
-      <ion-searchbar placeholder="搜索货号/批号" [(ngModel)]="searchVal" (ionChange) = "searchFun()"></ion-searchbar>
+      <ion-searchbar placeholder="请输入关键字" [(ngModel)]="searchVal" (ionChange) = "searchFun()"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
   
@@ -35,11 +38,14 @@
   <ion-router-outlet main></ion-router-outlet>
   
   <ion-content>
-    
+    <!-- 下拉刷新 -->
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content refreshingSpinner="crescent" pullingText="下拉刷新" refreshingText="刷新中...">
+      </ion-refresher-content>
+    </ion-refresher>
     <!-- 消息列表 -->
     <ion-list>
       <ng-container *ngIf="messageList">
-        
         <ion-item *ngFor="let item of messageList" (click)="msgDetailsClick(item)">
           <ion-label>
             <h3>{{item.subject}}</h3>
@@ -51,31 +57,9 @@
         </ion-item>
       </ng-container>
     </ion-list>
-  
+    
     <!-- 分页 -->
-    <div class="page">
-      <ion-item>
-        <span>共{{msgTotal}}条</span>
-        <span>{{page}}/{{pageNum}}</span>
-        <ion-item slot="end" lines="none">
-          <span>跳到</span>
-          <ion-input type="number" [(ngModel)]="pageKey" (keyup) = "pageKeyUp($event)"></ion-input>
-          <span>页</span>
-        </ion-item>
-      </ion-item>
-      <ion-item>
-        <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "selectSizeChange($event)">
-          <ion-select-option value="10" [selected] = "msgZize === 10 ? true : false">每页10条</ion-select-option>
-          <ion-select-option value="20" [selected] = "msgZize === 20 ? true : false">每页20条</ion-select-option>
-          <ion-select-option value="30" [selected] = "msgZize === 30 ? true : false">每页30条</ion-select-option>
-          <ion-select-option value="50" [selected] = "msgZize === 50 ? true : false">每页50条</ion-select-option>
-        </ion-select>
-        <div class="next-page">
-          <ion-button [color]="page <= 1 ? 'light' : null" (click)="nextPage(0)">上一页</ion-button>
-          <ion-button [color]="page >= pageNum ? 'light' : null" (click)="nextPage(1)">下一页</ion-button>
-        </div>
-      </ion-item>
-    </div>
+    <app-page #appPage [total]="msgTotal" [size]="msgZize" (checked)="checkedBack($event)"></app-page>
 
     <!-- tabel -->
     <table>

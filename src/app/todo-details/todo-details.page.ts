@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppGlobal,AppService,CommonMethods } from "../../app/config/config.service";
+import { AlertController } from '@ionic/angular';
 
 // Router
 import { Router,ActivatedRoute } from '@angular/router';
@@ -27,7 +28,14 @@ export class TodoDetailsPage implements OnInit {
   pageNums:any = 0;
   pages:number = 1;
   pageKeys:number = 1;
-  constructor(private appGlobal:AppGlobal, private appService:AppService, private commonMethods:CommonMethods, private router: Router, private activatedRoute: ActivatedRoute) { 
+  constructor(
+    private appGlobal:AppGlobal, 
+    private appService:AppService, 
+    private commonMethods:CommonMethods, 
+    private router: Router, 
+    private alertController:AlertController,
+    private activatedRoute: ActivatedRoute
+  ) { 
     this.getDetails();
     this.getLotList();
     this.getLotLists();
@@ -461,6 +469,30 @@ export class TodoDetailsPage implements OnInit {
     return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
   }
 
+  // 弹出框
+  async presentAlertConfirm(type:string,url:string,opt:any) {
+    const alert = await this.alertController.create({
+      header: '提示：',
+      message: '确认操作',
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: '确定',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.clickBtn(type,url,opt);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
   ngOnInit() {
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController,Platform } from '@ionic/angular';
 import { AppGlobal,AppService,CommonMethods } from "../../app/config/config.service";
 
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+  @ViewChild("appPage") child:any;
   searchVal:string = "";
   messageList:null;
   msgTotal:any = null;
@@ -24,16 +25,22 @@ export class Tab1Page {
     private menu:MenuController,
     private appGlobal:AppGlobal, 
     private appService:AppService, 
-    private commonMethods:CommonMethods, 
+    private commonMethods:CommonMethods,
     private router: Router
   ) {
     this.getData();
-    console.log("A">="a");
-    
   }
-
   ngOnInit() {
   }
+  // 下拉刷新
+  doRefresh(event:any) {
+    console.log('Begin async operation');
+    this.child.setPage(1);
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
+
   // 已读标识
   readTypeChange(e:any){
     this.todoStatus = e.detail.value;
@@ -42,29 +49,15 @@ export class Tab1Page {
     this.menu.close();
     console.log(this.todoStatus);
   }
-  // 一页多少条
-  selectSizeChange(e:any){
-    this.msgZize = e.detail.value;
-    this.getData();
-  }
   // 搜索
   searchFun(){
     console.log(this.searchVal);
     this.getData();
   }
-  pageKeyUp(e:any){
-    console.log(e);
-    if(e.keyCode == 13){
-      if(this.pageKey <= this.pageNum && this.pageKey >= 1){
-        this.page = this.pageKey;
-        this.getData();
-      } else {
-        this.commonMethods.toast("bottom",{},"输入的页数超出已有页数");
-      }
-    }
-  }
   // 消息列表
   getData(){
+    console.log(this.page);
+    
     this.appService.post(AppGlobal.BASE_URL()+"my/todo-search",{
       todo_status:this.todoStatus,
       page:this.page,
@@ -81,29 +74,16 @@ export class Tab1Page {
       }
     })
   }
+  // 返回分页
+  checkedBack(e:any){
+    console.log(e);
+    this.page = e.page;
+    this.msgZize = e.size;
+    this.getData();
+  }
   // 消息详情
   msgDetailsClick(item:any){
     this.router.navigate(["/todo-details"],{queryParams:{id:item.form_id,type:item.form_type}});
-  }
-  // 上一页/下一页
-  nextPage(type:number){
-    console.log(type,this.page);
-    
-    if(type){
-      console.log("+");    
-      if(this.page < this.pageNum){
-        console.log("+");
-        this.page++;
-        this.getData();
-      }
-    } else {
-      console.log("-");    
-      if(this.page > 1){
-        console.log("-");
-        this.page--;
-        this.getData();
-      }
-    }
   }
   // 搜索
   clickedSearch(){

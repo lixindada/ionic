@@ -5,15 +5,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MessagePage } from './message.page';
-
-// 共享模块
-import { SharedModule } from "../shared.module";
-
+import { PagePage } from './page.page';
 const routes: Routes = [
   {
     path: '',
-    component: MessagePage
+    component: PagePage
   }
 ];
 
@@ -22,10 +18,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    SharedModule,
     RouterModule.forChild(routes)
   ],
-  exports:[],
-  declarations: [MessagePage]
+  exports: [],
+  declarations: []
 })
-export class MessagePageModule {}
+export class PagePageModule {}

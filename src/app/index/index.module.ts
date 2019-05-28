@@ -6,6 +6,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { IndexPage } from './index.page';
 
+// 共享模块
+import { SharedModule } from "../shared.module";
+
 const routes: Routes = [
   {
     path: '',
@@ -18,6 +21,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ],
   declarations: [IndexPage],

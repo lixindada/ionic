@@ -1,0 +1,23 @@
+<div class="page">
+  <ion-item>
+    <span appHighlight>共{{total}}条</span>
+    <span>{{page}}/{{pageNum}}</span>
+    <ion-item slot="end" lines="none">
+      <span>跳到</span>
+      <ion-input type="number" [(ngModel)]="pageKey" (keyup) = "pageKeyUp($event)"></ion-input>
+      <span>页</span>
+    </ion-item>
+  </ion-item>
+  <ion-item>
+    <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "selectSizeChange($event)">
+      <ion-select-option value="10" [selected] = "size === 10 ? true : false">每页10条</ion-select-option>
+      <ion-select-option value="20" [selected] = "size === 20 ? true : false">每页20条</ion-select-option>
+      <ion-select-option value="30" [selected] = "size === 30 ? true : false">每页30条</ion-select-option>
+      <ion-select-option value="50" [selected] = "size === 50 ? true : false">每页50条</ion-select-option>
+    </ion-select>
+    <div class="next-page">
+      <ion-button [color]="page <= 1 ? 'light' : null" (click)="nextPage(0)">上一页</ion-button>
+      <ion-button [color]="page >= pageNum ? 'light' : null" (click)="nextPage(1)">下一页</ion-button>
+    </div>
+  </ion-item>
+</div>

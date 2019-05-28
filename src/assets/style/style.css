@@ -32,3 +32,7 @@ button { background: #FFF;}
 ion-toolbar ion-title{
     padding-left: 16px;
 }
+
+ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView app-tab3,ion-app.cameraView ion-router-outlet,ion-app.cameraView.inner-scroll{
+  background: transparent none !important; 
+}

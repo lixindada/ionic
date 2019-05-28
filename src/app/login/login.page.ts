@@ -32,8 +32,8 @@ export class LoginPage implements OnInit {
         console.log(xhr);
         let data:any;
         data = xhr;
+        this.commonMethods.toast("bottom","ios",data.msg);
         if(data.code == 0){
-          this.commonMethods.toast("bottom","ios",data.msg);
           localStorage.setItem("app-Token",data.data.token);
           this.jpush.setAlias({sequence:12,alias:data.data.user.id}).then((xhr:any)=>{
             console.log("alias="+JSON.stringify(xhr));
@@ -42,6 +42,8 @@ export class LoginPage implements OnInit {
           })
           this.router.navigate(['/tabs/tab1']);
         }
+      }).catch(err=>{
+        console.log(err);
       })
     } else {
       this.jpush.getRegistrationID().then((value:any)=>{

@@ -1,0 +1,25 @@
+.page{
+    >ion-item{
+        &:nth-of-type(1){
+            span{
+                &:nth-of-type(1){
+                    padding-right: 16px;
+                }
+            }
+        }
+    }
+    ion-input{
+        width: 50px;
+    }
+    ion-select{
+        width: 100px;
+    }
+    .next-page{
+        position: absolute;
+        z-index: 22;
+        right: 20px;
+    }
+}
+ion-item ion-label{
+    padding: 10px 0;
+}

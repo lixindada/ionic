@@ -1,19 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
+import { ToastController,LoadingController } from '@ionic/angular';
+
+import { BaseUI } from '../../assets/js/baseui'
 // Router
 import { Router } from '@angular/router';
+import { log } from 'util';
 
 @Injectable()
 export class AppGlobal {
   // static BASE_URL='http://172.168.30.230:7001/';
-  // static BASE_URL='/apidata/';
+  // static BASE_URL='/testapi/';
   static BASE_URL () {
     const ua = navigator.userAgent;
-    let url = "http://172.168.30.230:7001/";
+    // let url = "http://172.168.30.230:7001/"; // test
+    let url = "http://47.92.151.49:7001/"  // test
+    // let url = "http://47.92.254.91:7001/"
     if(/MRA58N/i.test(ua)){
-      url = "/apidata/";
+      // url = "/testapi/";
+      url = "/www/";
+      // url = "/api/";
     }
     return url;
   }
@@ -23,13 +30,20 @@ export class AppGlobal {
 }
 
 @Injectable()
-export class AppService  {
-
-  constructor(private http: HTTP, private httpPc: HttpClient,public toastController: ToastController, private router: Router) { }
+export class AppService extends BaseUI  {
+  loading:any;
+  constructor(
+    private http: HTTP, 
+    private httpPc: HttpClient,
+    public toastController: ToastController,
+    public loadingController: LoadingController, 
+    private router: Router,
+  ) {
+    super();
+  }
   // post
   post(url:string,param:any) {
     const that = this;
-      // console.log(url,param);
       return new Promise( function(resolve, reject) {
         // pc test
         // ---------------------------------------------------------------------------
@@ -62,9 +76,6 @@ export class AppService  {
           that.http.setDataSerializer('json');
           that.http.post(url, param, {"x-token":localStorage.getItem("app-Token") || "","Content-Type": "application/json"})
           .then(data => {
-            console.log("lxx");
-            console.log(data);
-            console.log("lxx");
             if(data.status == 200){
               const datas = JSON.parse(data.data);
               if(datas.code == 401){
@@ -75,9 +86,6 @@ export class AppService  {
             }
           })
           .catch(error => {
-            console.log("lxx");
-            console.log(error);
-            console.log("lxx");
             reject(error);
           });
         }
@@ -120,9 +128,6 @@ export class AppService  {
           //------------------------------------------------------------------------------
           that.http.get(url, param, {"x-token":localStorage.getItem("app-Token") || ""})
           .then(data => {
-            console.log("lxx");
-            console.log(data);
-            console.log("lxx");
             if(data.status == 200){
               const datas = JSON.parse(data.data);
               if(datas.code == 401){
@@ -133,9 +138,6 @@ export class AppService  {
             }
           })
           .catch(error => {
-            console.log("lxx");
-            console.log(error);
-            console.log("lxx");
             reject(error);
           });
         }

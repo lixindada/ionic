@@ -1,4 +1,7 @@
 <ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>库存</ion-title>
+  </ion-toolbar>
   <ion-toolbar>
     <ion-buttons slot="primary">
       <ion-button (click)="clickedSearch()">
@@ -8,7 +11,7 @@
         筛选
       </ion-button>
     </ion-buttons>
-    <ion-searchbar placeholder="请输入关键字" [(ngModel)]="keyword"></ion-searchbar>
+    <ion-searchbar placeholder="搜索货号/批号" [(ngModel)]="keyword"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -55,13 +58,13 @@
       
       <ion-item>
         <ion-label>商品状态</ion-label>
-        <ion-select okText="确定" cancelText="取消" multiple="true">
-          <ion-select-option value="item.inventory_status_name" *ngFor="let item of statusList">{{item.inventory_status_name}}</ion-select-option>
+        <ion-select okText="确定" cancelText="取消" multiple="true" (ionChange) = "selectFun($event,'inventory_status')">
+          <ion-select-option (value)="item.inventory_status" *ngFor="let item of statusList">{{item.inventory_status_name}}</ion-select-option>
         </ion-select>
       </ion-item>
       
       <ion-item (click)="clearStatus()">
-        清除所有筛选状态
+        <ion-button>清除所有筛选状态</ion-button>
       </ion-item>
     </ion-list>
   </ion-content>
@@ -71,8 +74,18 @@
 
 <ion-content>
   
+  <!-- 扫码 -->
+  <!-- <ion-button>
+    <a style="color: #fff" href="/tab3">扫码</a>
+  </ion-button> -->
+
+  <!-- 下拉刷新 -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="crescent" pullingText="下拉刷新" refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
   <!-- 表格 -->
-  <div class="tableDiv">
+  <!-- <div class="tableDiv">
     <table *ngIf="stockList" cellpadding="10" cellspacing="10">
       <tr>
         <th nowrap>注册证名称</th>
@@ -103,7 +116,7 @@
         <td nowrap>{{setTime(item.inventory_time)}}</td>
       </tr>
     </table>
-  </div>
+  </div> -->
 
   <!-- 库存列表 -->
   <ion-list>
@@ -143,27 +156,6 @@
   </ion-list>
 
   <!-- 分页 -->
-  <div class="page">
-    <ion-item>
-      <span>共{{msgTotal}}条</span>
-      <span>{{page}}/{{pageNum}}</span>
-      <ion-item slot="end" lines="none">
-        <span>跳到</span>
-        <ion-input type="number" [(ngModel)]="pageKey" (keyup) = "pageKeyUp($event)"></ion-input>
-        <span>页</span>
-      </ion-item>
-    </ion-item>
-    <ion-item>
-      <ion-select okText="确定" cancelText="取消" multiple="false" (ionChange) = "selectSizeChange($event)">
-        <ion-select-option value="10" [selected] = "msgZize === 10 ? true : false">每页10条</ion-select-option>
-        <ion-select-option value="20" [selected] = "msgZize === 20 ? true : false">每页20条</ion-select-option>
-        <ion-select-option value="30" [selected] = "msgZize === 30 ? true : false">每页30条</ion-select-option>
-        <ion-select-option value="50" [selected] = "msgZize === 50 ? true : false">每页50条</ion-select-option>
-      </ion-select>
-      <div class="next-page">
-        <ion-button [color]="page <= 1 ? 'light' : null" (click)="nextPage(0)">上一页</ion-button>
-        <ion-button [color]="page >= pageNum ? 'light' : null" (click)="nextPage(1)">下一页</ion-button>
-      </div>
-    </ion-item>
-  </div>
+  <app-page #appPage [total]="msgTotal" [size]="msgZize" (checked)="checkedBack($event)"></app-page>
+  
 </ion-content>

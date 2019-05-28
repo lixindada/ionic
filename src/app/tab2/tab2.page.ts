@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { ZBar, ZBarOptions } from '@ionic-native/zbar/ngx';
+// import { ZBar, ZBarOptions } from '@ionic-native/zbar/ngx';
+// import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
 // import { BaiduPush } from '@ionic-native/baidu-push/ngx';
-import { CodePush } from '@ionic-native/code-push/ngx';
+// import { CodePush } from '@ionic-native/code-push/ngx';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 // 上传文件
@@ -10,7 +12,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { File } from '@ionic-native/file/ngx';
 // bar 
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
+// import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
 @Component({
   selector: 'app-tab2',
@@ -21,7 +23,17 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 export class Tab2Page {
 
-  constructor(private zbar: ZBar ,private codePush: CodePush ,private actionSheet: ActionSheet ,private http: HTTP, private transfer: FileTransfer, private file: File, private statusBar: StatusBar) { }
+  constructor(
+    // private zbar: ZBar ,
+    // private codePush: CodePush ,
+    private actionSheet: ActionSheet ,
+    private http: HTTP, 
+    private transfer: FileTransfer, 
+    private file: File, 
+    // private qrScanner: QRScanner,
+    private statusBar: StatusBar,
+    // private barcodeScanner: BarcodeScanner
+  ) { }
 
   configUrlss = 'https://ts130.immaohao.com/tuoshui/likeUser/friendCircle';
   configUrl = 'http://api.cxyhome.ink/public/index.php/index/Index/userid_list';
@@ -112,9 +124,9 @@ export class Tab2Page {
     // this.baiduPush.startWork('测试')
     //   .then((res: any) => console.log(res))
     //   .catch((error: any) => console.error(error));
-    this.codePush.sync().subscribe((syncStatus) => console.log(syncStatus));
-    const downloadProgress = (progress) => { console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); }
-    this.codePush.sync({}, downloadProgress).subscribe((syncStatus) => console.log(syncStatus));
+    // this.codePush.sync().subscribe((syncStatus) => console.log(syncStatus));
+    // const downloadProgress = (progress) => { console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); }
+    // this.codePush.sync({}, downloadProgress).subscribe((syncStatus) => console.log(syncStatus));
   }
   // 获取数据
   getDatas(){
@@ -143,18 +155,25 @@ export class Tab2Page {
   }
   // 扫码
   scan() {
-    let options: ZBarOptions = {
-      flash: 'off',
-      text_title: '扫码',
-      drawSight: false
-    };
+    // let options: ZBarOptions = {
+    //   flash: 'off',
+    //   text_title: '扫码',
+    //   drawSight: false
+    // };
 
-    this.zbar.scan(options)
-      .then(result => {
-        alert("结果：" + result); // Scanned code
-      })
-      .catch(error => {
-        alert(error); // Error message
-      });
+    // this.zbar.scan(options)
+    //   .then(result => {
+    //     alert("结果：" + result); // Scanned code
+    //   })
+    //   .catch(error => {
+    //     alert(error); // Error message
+    //   });
+  }
+  scan2() {
+    // this.barcodeScanner.scan().then(barcodeData => {
+    //   console.log('Barcode data', barcodeData);
+    //  }).catch(err => {
+    //      console.log('Error', err);
+    //  });
   }
 }

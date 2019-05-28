@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Flashlight } from '@ionic-native/flashlight/ngx';
+// import { Flashlight } from '@ionic-native/flashlight/ngx';
 import { ActionSheetController } from '@ionic/angular';
-import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx'; // 跳转
-import { log } from 'util';
+// import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx'; // 跳转
+
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
 
 @Component({
@@ -11,109 +12,89 @@ import { log } from 'util';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-  tabAct = true;
-  messageList = [{
-    title:"title",
-    time:"2019-1-1"
-  },{
-    title:"title",
-    time:"2019-1-1"
-  },{
-    title:"title",
-    time:"2019-1-1"
-  },{
-    title:"title",
-    time:"2019-1-1"
-  },{
-    title:"title",
-    time:"2019-1-1"
-  }];
-  constructor(private flashlight: Flashlight, public actionSheetController: ActionSheetController, private nativePageTransitions: NativePageTransitions) {
-    
+  light: boolean;//判断闪光灯
+  frontCamera: boolean;//判断摄像头
+  isShow: boolean = false;//控制显示背景，避免切换页面卡顿
+  constructor(
+    private qrScanner: QRScanner,
+  ) {
+    //默认为false
+    this.light = false;
+    this.frontCamera = false;
+    this.ionViewDidLoad();
+  }
+  
+  ionViewDidLoad() {
+    console.log("load");
+    this.qrScanner.prepare()
+    .then((status: QRScannerStatus) => {
+      console.log(status);
+      if (status.authorized) {
+        // camera permission was granted
+        // start scanning
+        console.log(status);
+        
+        let scanSub = this.qrScanner.scan().subscribe((text: string) => {
+          alert(text)
+          console.log('Scanned something', text);
+          this.qrScanner.hide(); // hide camera preview
+          scanSub.unsubscribe(); // stop scanning
+        });
+
+      } else if (status.denied) {
+        // camera permission was permanently denied
+        // you must use QRScanner.openSettings() method to guide the user to the settings page
+        // then they can grant the permission from there
+      } else {
+        // permission was denied, but not permanently. You can ask for permission again at a later time.
+      }
+    })
+    .catch((e: any) => console.log('Error is', e));
+  }
+
+  ionViewDidEnter(){
+    //页面可见时才执行
+    console.log("1111111111111");
+    this.showCamera();
+    this.isShow = true;//显示背景
+  }
+
+  /**
+   * 闪光灯控制，默认关闭
+   */
+  toggleLight() {
+    if (this.light) {
+      this.qrScanner.disableLight();
+    } else {
+      this.qrScanner.enableLight();
+    }
+    this.light = !this.light;
+  }
+
+  /**
+   * 前后摄像头互换
+   */
+  toggleCamera() {
+    if (this.frontCamera) {
+      this.qrScanner.useBackCamera();
+    } else {
+      this.qrScanner.useFrontCamera();
+    }
+    this.frontCamera = !this.frontCamera;
+  }
+
+  showCamera() {
+    (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
+    this.qrScanner.show();
+  }
+
+  hideCamera() {    
+    (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
+    this.qrScanner.hide();//需要关闭扫描，否则相机一直开着
+    this.qrScanner.destroy();//关闭
   }
 
   ionViewWillLeave() {
-    let options: NativeTransitionOptions = {
-       direction: 'up',
-       duration: 500,
-       slowdownfactor: 3,
-       slidePixels: 20,
-       iosdelay: 100,
-       androiddelay: 150,
-       fixedPixelsTop: 0,
-       fixedPixelsBottom: 60
-      };
-    this.nativePageTransitions.slide(options)
-      .then(data=>{
-        console.log(data);
-      })
-      .catch(onError=>{
-        console.log(onError);
-      });
-   }
-   
-   // example of adding a transition when pushing a new page
-   openPage(page: any) {
-    //  this.nativePageTransitions.slide(options);
-    //  this.navCtrl.push(page);
-   }
-
-  // 切换tab
-  async switchTab(n){
-    console.log(n);
-    n ? this.tabAct = false : this.tabAct = true;
-  }
-
-  async segmentButtonClicked(ev: any) {
-    console.log('Segment button clicked', ev);
-  }
-
-  // 底部弹出框
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Albums',
-      buttons: [{
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          console.log('Delete clicked');
-        }
-      }, {
-        text: 'Share',
-        icon: 'share',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, {
-        text: 'Play (open modal)',
-        icon: 'arrow-dropright-circle',
-        handler: () => {
-          console.log('Play clicked');
-        }
-      }, {
-        text: 'Favorite',
-        icon: 'heart',
-        handler: () => {
-          console.log('Favorite clicked');
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-    await actionSheet.present();
-  }
-
-  openFlashlight(){
-    this.flashlight.switchOn();
-  }
-
-  closeFlashlight(){
-    this.flashlight.switchOff();
+    this.hideCamera();
   }
 }
