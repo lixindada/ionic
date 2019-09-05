@@ -60,7 +60,6 @@ export class MyPage implements OnInit {
     
     return await modal.present();
   }
-
   // 登出
   logout(){
     const data = {};

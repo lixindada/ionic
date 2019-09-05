@@ -4,7 +4,8 @@ import { AppGlobal,AppService,CommonMethods } from "../../app/config/config.serv
 
 // import {MultiPickerModule} from 'ion-multi-picker';
 // Router
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
+import { log } from 'util';
 
 @Component({
   selector: 'app-index',
@@ -49,15 +50,32 @@ export class IndexPage implements OnInit {
     private appGlobal:AppGlobal, 
     private appService:AppService, 
     private commonMethods:CommonMethods, 
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { 
     this.getData();
     this.getStockList();
   }
 
   ngOnInit() {
+    
   }
 
+  ionViewDidEnter(){
+    if(this.activatedRoute.snapshot.queryParams.code){
+      this.keyword = this.activatedRoute.snapshot.queryParams.code;
+      this.getStockList();
+    }
+  }
+  ngDoCheck(){
+    console.log("库存~~~");
+    console.log(this.activatedRoute.snapshot.queryParams);
+    
+    if(this.activatedRoute.snapshot.queryParams.code){
+      this.keyword = this.activatedRoute.snapshot.queryParams.code;
+      this.getStockList();
+    }
+  }
   // 下拉刷新
   doRefresh(event:any) {
     console.log('Begin async operation');
@@ -74,6 +92,11 @@ export class IndexPage implements OnInit {
     this.page = e.page;
     this.msgZize = e.size;
     this.getStockList();
+  }
+
+  // qr-scanner
+  getScanner(){
+    this.router.navigate(["/tab3"]);
   }
 
   // 清楚筛选状态

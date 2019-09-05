@@ -1,14 +1,17 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>库存</ion-title>
+    <ion-text color="light" slot="end" style="margin-right: 10px" (click)="openScreenModal()">
+      筛选
+    </ion-text>
   </ion-toolbar>
   <ion-toolbar>
     <ion-buttons slot="primary">
       <ion-button (click)="clickedSearch()">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
-      <ion-button color="danger" (click)="openScreenModal()">
-        筛选
+      <ion-button color="tertiary" (click)="getScanner()">
+        <ion-icon name="qr-scanner"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-searchbar placeholder="搜索货号/批号" [(ngModel)]="keyword"></ion-searchbar>
@@ -73,11 +76,6 @@
 <ion-router-outlet main></ion-router-outlet>
 
 <ion-content>
-  
-  <!-- 扫码 -->
-  <!-- <ion-button>
-    <a style="color: #fff" href="/tab3">扫码</a>
-  </ion-button> -->
 
   <!-- 下拉刷新 -->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -125,7 +123,7 @@
 
         <ion-card>
 
-          <ion-item [lines]="item.act ? 'none' : 'inset'">
+          <ion-item [lines]="item.act ? 'none' : 'inset'" (click)="stockMore(item)">
             <ion-label>
               <p><b>注册证名称:</b> {{item.goods_name}}</p>
               <p><b>货号:</b> {{item.ref}}</p>
@@ -133,7 +131,7 @@
               <p><b>状态:</b> {{item.inventory_status_name}}</p>
               <p><b>可用/库存:</b> {{item.quantity_available}}/{{item.quantity_inventory}}</p>
             </ion-label>
-            <ion-buttons (click)="stockMore(item)">
+            <ion-buttons>
               <ion-icon [name]="!item.act ? 'arrow-down' : 'arrow-up'"></ion-icon>
             </ion-buttons>
           </ion-item>

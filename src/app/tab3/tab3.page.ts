@@ -4,7 +4,9 @@ import { ActionSheetController } from '@ionic/angular';
 // import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx'; // 跳转
 
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+import { log } from 'util';
 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -17,14 +19,14 @@ export class Tab3Page {
   isShow: boolean = false;//控制显示背景，避免切换页面卡顿
   constructor(
     private qrScanner: QRScanner,
+    private router: Router
   ) {
     //默认为false
     this.light = false;
     this.frontCamera = false;
-    this.ionViewDidLoad();
   }
   
-  ionViewDidLoad() {
+  Loads() {
     console.log("load");
     this.qrScanner.prepare()
     .then((status: QRScannerStatus) => {
@@ -35,10 +37,10 @@ export class Tab3Page {
         console.log(status);
         
         let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-          alert(text)
           console.log('Scanned something', text);
-          this.qrScanner.hide(); // hide camera preview
           scanSub.unsubscribe(); // stop scanning
+          this.hideCamera();
+          this.router.navigate(["/tabs/index"],{queryParams:{code:text}});
         });
 
       } else if (status.denied) {
@@ -57,6 +59,7 @@ export class Tab3Page {
     console.log("1111111111111");
     this.showCamera();
     this.isShow = true;//显示背景
+    this.Loads();
   }
 
   /**
@@ -88,13 +91,24 @@ export class Tab3Page {
     this.qrScanner.show();
   }
 
-  hideCamera() {    
+  hideCamera() {
     (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
-    this.qrScanner.hide();//需要关闭扫描，否则相机一直开着
+    // this.qrScanner.hide();//需要关闭扫描，否则相机一直开着
+    let htmlDom = document.querySelector("html");
+    let bodyDom = document.querySelector("body");
+    console.log(htmlDom);
+    setTimeout(()=>{
+      htmlDom.style.backgroundColor = "";
+      bodyDom.style.backgroundColor = "";
+    },4000);
+    
+    this.isShow = false; //显示背景
     this.qrScanner.destroy();//关闭
+    console.log("close");
   }
 
   ionViewWillLeave() {
+    console.log("--------out");
     this.hideCamera();
   }
 }
