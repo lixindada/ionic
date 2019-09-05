@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MenuController,Platform } from '@ionic/angular';
 import { AppGlobal,AppService,CommonMethods } from "../../app/config/config.service";
+import * as ECharts from 'echarts';
 
 // Router
 import { Router } from '@angular/router';
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class Tab1Page {
   @ViewChild("appPage") child:any;
+  @ViewChild('chart') chart: ElementRef;
   searchVal:string = "";
   messageList:null;
   msgTotal:any = null;
@@ -32,6 +34,9 @@ export class Tab1Page {
   }
   ngOnInit() {
   }
+  ionViewDidEnter() {
+    this.initChart();
+  }
   // 下拉刷新
   doRefresh(event:any) {
     console.log('Begin async operation');
@@ -40,7 +45,6 @@ export class Tab1Page {
       event.target.complete();
     }, 1000);
   }
-
   // 已读标识
   readTypeChange(e:any){
     this.todoStatus = e.detail.value;
@@ -93,5 +97,55 @@ export class Tab1Page {
   openScreenModal() {
     this.menu.enable(true, 'dealtMenu');
     this.menu.open('dealtMenu');
+  }
+  // charts
+  initChart() {
+    let element = this.chart.nativeElement;
+    element.style.width = (document.body.clientWidth - 16) + 'px';//设置容器宽度
+    let myChart = ECharts.init(element);
+    myChart.setOption({
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+      },
+      legend: {
+        orient: 'vertical',
+        x: 'left',
+        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+      },
+      series: [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              show: true,
+              textStyle: {
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          data: [
+            {value: 335, name: '直接访问'},
+            {value: 310, name: '邮件营销'},
+            {value: 234, name: '联盟广告'},
+            {value: 135, name: '视频广告'},
+            {value: 1548, name: '搜索引擎'}
+          ]
+        }
+      ]
+    });
   }
 }
